@@ -1,72 +1,42 @@
-<html>
-	<head>
-		<title>Richard Gill's Hot Dog World Tour</title>
-		<link href='https://fonts.googleapis.com/css?family=Roboto+Mono:400,300' rel='stylesheet' type='text/css'>
-		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.min.css">
-		<link rel="stylesheet" href="../dist/css/material-photo-gallery.css">
-
-		<link rel="canonical" href="https://www.richardgill.net/hotdogs.html">
-		<meta http-equiv="content-language" content="en-GB">
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		
-		<!-- Global site tag (gtag.js) - Google Analytics -->
-		<script async src="https://www.googletagmanager.com/gtag/js?id=UA-34420768-1"></script>
-		<script>
-		  window.dataLayer = window.dataLayer || [];
-		  function gtag(){dataLayer.push(arguments);}
-		  gtag('js', new Date());
-
-		  gtag('config', 'UA-34420768-1');
-		</script>
-
-
-		
-	</head>
-	<body>
-		<!-- <h1>Richard Gill's Hot Dog World Tour</h1> -->
-		<img class="logo" src="../dist/images/hotdoglogo.png" data-full="../dist/images/hotdoglogo.png" />
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Richard Gill's Hot Dog World Tour</title>
+	<link rel="canonical" href="https://www.richardgill.net/hotdogs.html">
+	<meta http-equiv="content-language" content="en-GB">
+	<link rel="stylesheet" href="main.css">
+</head>
+<body>
+	<header>
+		<img src="images/hotdoglogo.png" alt="Hot Dog World Tour Logo">
 		<p>I love Hot Dogs! I hope you enjoy looking at my Hot Dogs from around the world as much as I have enjoyed traveling and eating them.</p>
-	
+	</header>
 
-		<div class="m-p-g">
-			<div class="m-p-g__thumbs" data-google-image-layout data-max-height="350">
-				<img src="../dist/images/Berlin.jpg" data-full="../dist/images/Berlin.jpg" class="m-p-g__thumbs-img" alt="Berlin"/>
-				<img src="../dist/images/Iceland.jpg" data-full="../dist/images/Iceland.jpg" class="m-p-g__thumbs-img" alt="Iceland"/>
-				<img src="../dist/images/Milan.jpg" data-full="../dist/images/Milan.jpg" class="m-p-g__thumbs-img" alt="Milan"/>
-				<img src="../dist/images/Mayrhofen.jpg" data-full="../dist/images/Mayrhofen.jpg" class="m-p-g__thumbs-img" alt="Mayrhofen"/>
-				<img src="../dist/images/vegas.jpg" data-full="../dist/images/vegas.jpg" class="m-p-g__thumbs-img" alt="Las Vegas"/>
-				<img src="../dist/images/Les Arcs.jpg" data-full="../dist/images/Les Arcs.jpg" class="m-p-g__thumbs-img" alt="Les Arcs"/>
-				<img src="../dist/images/Tignes.jpg" data-full="../dist/images/Tignes.jpg" class="m-p-g__thumbs-img" alt="Tignes"/>
-				<img src="../dist/images/Morzine.jpg" data-full="../dist/images/Morzine.jpg" class="m-p-g__thumbs-img" alt="Morzine"/>
-				<img src="../dist/images/amsterdam.jpg" data-full="../dist/images/amsterdam.jpg" class="m-p-g__thumbs-img" alt="Amsterdam"/>
-				<img src="../dist/images/ChesterZoo.jpg" data-full="../dist/images/ChesterZoo.jpg" class="m-p-g__thumbs-img" alt="Chester"/>
-				<img src="../dist/images/anglesey.jpg" data-full="../dist/images/anglesey.jpg" class="m-p-g__thumbs-img" alt="Anglesey"/>
-				<img src="../dist/images/Copenhagen.jpg" data-full="../dist/images/Copenhagen.jpg" class="m-p-g__thumbs-img" alt="Copenhagen"/>
-				<img src="../dist/images/lisbon.jpg" data-full="../dist/images/lisbon.jpg" class="m-p-g__thumbs-img" alt="Lisbon"/>
-				<img src="../dist/images/hungary.jpg" data-full="../dist/images/hungary.jpg" class="m-p-g__thumbs-img" alt="Budapest"/>
-				<img src="../dist/images/Barca.jpg" data-full="../dist/images/Barca.jpg" class="m-p-g__thumbs-img" alt="Barcelona"/>
-				<img src="../dist/images/rampone.jpg" data-full="../dist/images/rampone.jpg" class="m-p-g__thumbs-img" alt="Ramp One"/>
-				<img src="../dist/images/wherenext.jpg" data-full="../dist/images/wherenext.jpg" class="m-p-g__thumbs-img" alt="Where Next"/>
+	<div class="masonry" id="gallery"></div>
+
+	<!-- Lightbox -->
+	<div class="lightbox" id="lightbox">
+		<button class="lightbox-close" id="lightbox-close">&times;</button>
+		<button class="lightbox-nav lightbox-prev" id="lightbox-prev">&#8249;</button>
+		<button class="lightbox-nav lightbox-next" id="lightbox-next">&#8250;</button>
+		<div class="lightbox-content">
+			<img id="lightbox-img" src="" alt="">
+			<div class="lightbox-info">
+				<h2 id="lightbox-title"></h2>
+				<p id="lightbox-desc"></p>
 			</div>
-
-			<div class="m-p-g__fullscreen"></div>
 		</div>
+		<div class="lightbox-counter" id="lightbox-counter"></div>
+	</div>
 
-		
+	<footer>
+		<p>richardgill.net &copy;<script>document.write(new Date().getFullYear())</script><br>
+		Richard Gill's Hot Dog World Tour<br>
+		Where next?</p>
+	</footer>
 
-		<script src="../dist/js/material-photo-gallery.js"></script>
-
-		<script>
-			var elem = document.querySelector('.m-p-g');
-
-			document.addEventListener('DOMContentLoaded', function() {
-				var gallery = new MaterialPhotoGallery(elem);
-			});
-		</script>
-	</body>
-	<!-- <footer>
-		<p>Richard Gill's Hot Dog world Tour <br/>richardgill.net ©<script>document.write(new Date().getFullYear())</script></p> 
-	</footer> -->
+	<script src="main.js"></script>
+</body>
 </html>
