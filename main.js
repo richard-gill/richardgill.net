@@ -4,164 +4,202 @@
 // ============================================================
 const images = [
 	{
-		file: 'anfield.jpg',
+		file: 'amsterdam.webp',
+		title: 'Amsterdam',
+		description: 'A Dutch hot dog in the heart of Amsterdam.',
+		width: 2688, height: 1520
+	},
+	{
+		file: 'anfield.webp',
 		title: 'Anfield',
-		description: 'A matchday hot dog at the home of Liverpool FC.'
+		description: 'A matchday hot dog at the home of Liverpool FC.',
+		width: 1920, height: 2560
 	},
 	{
-		file: 'anglesey.jpg',
+		file: 'anglesey.webp',
 		title: 'Anglesey',
-		description: 'A seaside hot dog on the beautiful Isle of Anglesey.'
+		description: 'A seaside hot dog on the beautiful Isle of Anglesey.',
+		width: 960, height: 720
 	},
 	{
-		file: 'Barca.jpg',
+		file: 'Barca.webp',
 		title: 'Barcelona',
-		description: 'A classic hot dog enjoyed in the heart of Catalonia.'
+		description: 'A classic hot dog enjoyed in the heart of Catalonia.',
+		width: 1200, height: 1600
 	},
 	{
-		file: 'Berlin.jpg',
+		file: 'Berlin.webp',
 		title: 'Berlin',
-		description: 'The iconic currywurst — a Berlin street food staple.'
+		description: 'The iconic currywurst — a Berlin street food staple.',
+		width: 960, height: 960
 	},
 	{
-		file: 'chamionx.jpg',
+		file: 'chamionx.webp',
 		title: 'Chamonix',
-		description: 'A mountain hot dog in the shadow of Mont Blanc.'
+		description: 'A mountain hot dog in the shadow of Mont Blanc.',
+		width: 1200, height: 1600
 	},
 	{
-		file: 'chamonixJack.jpg',
+		file: 'chamonixJack.webp',
 		title: 'Chamonix Jack',
-		description: 'Sharing a hot dog moment in the French Alps.'
+		description: 'Sharing a hot dog moment in the French Alps.',
+		width: 1920, height: 2560
 	},
 	{
-		file: 'chesterRaces.jpg',
+		file: 'chesterRaces.webp',
 		title: 'Chester Races',
-		description: 'A raceday hot dog at the historic Chester Racecourse.'
+		description: 'A raceday hot dog at the historic Chester Racecourse.',
+		width: 3072, height: 4096
 	},
 	{
-		file: 'ChesterZoo.jpg',
+		file: 'ChesterZoo.webp',
 		title: 'Chester Zoo',
-		description: 'Refuelling with a hot dog between animal enclosures.'
+		description: 'Refuelling with a hot dog between animal enclosures.',
+		width: 1200, height: 1600
 	},
 	{
-		file: 'Copenhagen.jpg',
+		file: 'Copenhagen.webp',
 		title: 'Copenhagen',
-		description: 'A Danish pølse — the original Scandinavian street dog.'
+		description: 'A Danish pølse — the original Scandinavian street dog.',
+		width: 1200, height: 1600
 	},
 	{
-		file: 'costco.jpg',
+		file: 'costco.webp',
 		title: 'Costco',
-		description: 'The legendary £1.50 Costco hot dog — unbeatable value.'
+		description: 'The legendary £1.50 Costco hot dog — unbeatable value.',
+		width: 3904, height: 5184
 	},
 	{
-		file: 'disneylandParis.jpg',
+		file: 'disneylandParis.webp',
 		title: 'Disneyland Paris',
-		description: 'The happiest hot dog on earth, Disney style.'
+		description: 'The happiest hot dog on earth, Disney style.',
+		width: 1536, height: 2048
 	},
 	{
-		file: 'dublin.jpg',
+		file: 'dublin.webp',
 		title: 'Dublin',
-		description: 'An Irish hot dog in the heart of Dublin.'
+		description: 'An Irish hot dog in the heart of Dublin.',
+		width: 3072, height: 4096
 	},
 	{
-		file: 'etihad.jpg',
+		file: 'etihad.webp',
 		title: 'Etihad Stadium',
-		description: 'A matchday hot dog at Manchester City\'s ground.'
+		description: 'A matchday hot dog at Manchester City\'s ground.',
+		width: 3072, height: 4096
 	},
 	{
-		file: 'hungary.jpg',
+		file: 'hungary.webp',
 		title: 'Hungary',
-		description: 'A Hungarian hot dog — Central European flavours.'
+		description: 'A Hungarian hot dog — Central European flavours.',
+		width: 1600, height: 1200
 	},
 	{
-		file: 'Iceland.jpg',
+		file: 'Iceland.webp',
 		title: 'Iceland',
-		description: 'The famous Icelandic pylsur, best hot dog in the world.'
+		description: 'The famous Icelandic pylsur, best hot dog in the world.',
+		width: 960, height: 720
 	},
 	{
-		file: 'krakow.jpg',
+		file: 'krakow.webp',
 		title: 'Krakow',
-		description: 'A Polish hot dog from the streets of Krakow.'
+		description: 'A Polish hot dog from the streets of Krakow.',
+		width: 3072, height: 4096
 	},
 	{
-		file: 'lasVegas.jpg',
+		file: 'lasVegas.webp',
 		title: 'Las Vegas',
-		description: 'A hot dog on the Las Vegas Strip — high roller style.'
+		description: 'A hot dog on the Las Vegas Strip — high roller style.',
+		width: 288, height: 512
 	},
 	{
-		file: 'legoland.jpg',
+		file: 'legoland.webp',
 		title: 'Legoland',
-		description: 'A brick-sized hot dog at Legoland.'
+		description: 'A brick-sized hot dog at Legoland.',
+		width: 1536, height: 2048
 	},
 	{
-		file: 'Les Arcs.jpg',
+		file: 'Les Arcs.webp',
 		title: 'Les Arcs',
-		description: 'A mountain hot dog after a day on the slopes.'
+		description: 'A mountain hot dog after a day on the slopes.',
+		width: 1152, height: 864
 	},
 	{
-		file: 'liverpoolBombedOutChurch.jpg',
+		file: 'liverpoolBombedOutChurch.webp',
 		title: 'Liverpool Bombed Out Church',
-		description: 'A hot dog by Liverpool\'s iconic Bombed Out Church Beer Festival.'
+		description: 'A hot dog by Liverpool\'s iconic Bombed Out Church Beer Festival.',
+		width: 1600, height: 900
 	},
 	{
-		file: 'Mayrhofen.jpg',
+		file: 'Mayrhofen.webp',
 		title: 'Mayrhofen',
-		description: 'An Austrian hot dog in the Zillertal valley.'
+		description: 'An Austrian hot dog in the Zillertal valley.',
+		width: 1940, height: 2592
 	},
 	{
-		file: 'Milan.jpg',
+		file: 'Milan.webp',
 		title: 'Milan',
-		description: 'Italian style — a hot dog with a Milanese twist.'
+		description: 'Italian style — a hot dog with a Milanese twist.',
+		width: 720, height: 960
 	},
 	{
-		file: 'Morzine.jpg',
+		file: 'Morzine.webp',
 		title: 'Morzine',
-		description: 'Après-ski perfection in the Portes du Soleil.'
+		description: 'Après-ski perfection in the Portes du Soleil.',
+		width: 540, height: 960
 	},
 	{
-		file: 'porthAigo.jpg',
+		file: 'porthAigo.webp',
 		title: 'Porth Aigo',
-		description: 'A coastal hot dog on the Welsh shoreline.'
+		description: 'A coastal hot dog on the Welsh shoreline.',
+		width: 5184, height: 3904
 	},
 	{
-		file: 'ramp1.jpeg',
+		file: 'ramp1.webp',
 		title: 'Ramp 1',
-		description: 'A hot dog at Ramp 1 — good times and good dogs.'
+		description: 'A hot dog at Ramp 1 — good times and good dogs.',
+		width: 5760, height: 2592
 	},
 	{
-		file: 'runcornAsdaHotdog.jpg',
+		file: 'runcornAsdaHotdog.webp',
 		title: 'Runcorn Asda',
-		description: 'The classic Asda café hot dog — a Runcorn institution.'
+		description: 'Lego hot dog - Runcorn Asda.',
+		width: 1920, height: 2560
 	},
 	{
-		file: 'runcornCricketClub.jpg',
+		file: 'runcornCricketClub.webp',
 		title: 'Runcorn Cricket Club',
-		description: 'A hot dog at the local cricket club — summer vibes.'
+		description: 'A hot dog at the local cricket club — summer vibes.',
+		width: 3904, height: 5184
 	},
 	{
-		file: 'runcornGolfClub.jpg',
+		file: 'runcornGolfClub.webp',
 		title: 'Runcorn Golf Club',
-		description: 'A hot dog on the 19th hole at Runcorn Golf Club.'
+		description: 'A hot dog on the 19th hole at Runcorn Golf Club.',
+		width: 3072, height: 4096
 	},
 	{
-		file: 'tenerife.jpg',
+		file: 'tenerife.webp',
 		title: 'Tenerife',
-		description: 'A sun-soaked hot dog in the Canary Islands.'
+		description: 'A sun-soaked hot dog in the Canary Islands.',
+		width: 3072, height: 4096
 	},
 	{
-		file: 'Tignes.jpg',
+		file: 'Tignes.webp',
 		title: 'Tignes',
-		description: 'Fuel for the French Alps, served slope-side.'
+		description: 'Fuel for the French Alps, served slope-side.',
+		width: 768, height: 1024
 	},
 	{
-		file: 'waringtonMarket.jpg',
+		file: 'waringtonMarket.webp',
 		title: 'Warrington Market',
-		description: 'A market hot dog from Warrington\'s finest.'
+		description: 'A market hot dog from Warrington\'s finest.',
+		width: 1920, height: 1440
 	},
 	{
-		file: 'wherenext.jpg',
+		file: 'wherenext.webp',
 		title: 'Where Next?',
-		description: 'The journey continues — where will the next hot dog be?'
+		description: 'The journey continues — where will the next hot dog be?',
+		width: 1024, height: 768
 	}
 ];
 
@@ -170,12 +208,28 @@ const gallery = document.getElementById('gallery');
 
 images.forEach(function (item, index) {
 	const div = document.createElement('div');
-	div.className = 'masonry-item';
+	div.className = 'masonry-item loading';
 	div.setAttribute('data-index', index);
 
 	const img = document.createElement('img');
 	img.src = 'images/' + item.file;
 	img.alt = item.title;
+	img.width = item.width;
+	img.height = item.height;
+
+	// First few images are above the fold — load eagerly with high priority
+	if (index < 4) {
+		img.fetchPriority = 'high';
+	} else {
+		img.loading = 'lazy';
+		img.fetchPriority = 'low';
+	}
+
+	// Remove skeleton once image has loaded
+	img.addEventListener('load', function () {
+		div.classList.remove('loading');
+		div.classList.add('loaded');
+	});
 
 	const caption = document.createElement('div');
 	caption.className = 'caption';
@@ -245,3 +299,7 @@ document.addEventListener('keydown', function (e) {
 	if (e.key === 'ArrowRight') nextImage();
 	if (e.key === 'ArrowLeft') prevImage();
 });
+
+// Update copyright year
+var yearEl = document.getElementById('year');
+if (yearEl) yearEl.textContent = new Date().getFullYear();
