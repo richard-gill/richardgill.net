@@ -26,6 +26,10 @@
 		@media(max-width:500px){.masonry{columns:1}body{padding:1rem}}
 		footer{text-align:center;margin-top:2rem;padding:1rem;color:#888;font-size:.9rem;line-height:1.6}
 	</style>
+	<!-- Preload LCP image so browser discovers it immediately -->
+	<link rel="preload" href="images/amsterdam.webp" as="image" type="image/webp" fetchpriority="high">
+	<link rel="preload" href="images/krakow.webp" as="image" type="image/webp" fetchpriority="high">
+	<link rel="preload" href="images/Milan.webp" as="image" type="image/webp" fetchpriority="high">
 	<!-- Full CSS loaded asynchronously to avoid render-blocking -->
 	<link rel="preload" href="main.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
 	<noscript><link rel="stylesheet" href="main.css"></noscript>
@@ -53,13 +57,16 @@
 			</div>
 			<div class="lightbox-counter" id="lightbox-counter"></div>
 		</div>
+		
 	</main>
 
 	<footer role="contentinfo">
+		<a href="map.html" style="display:inline-block;margin-top:0.75rem;color:#f44;text-decoration:none;font-size:0.95rem;">🗺️ View Interactive Map</a>
 		<p>richardgill.net &copy;<span id="year">2026</span><br>
 		Richard Gill's Hot Dog World Tour</p>
 	</footer>
 
+	<script src="images-data.js"></script>
 	<script src="main.js" defer></script>
 </body>
 </html>
