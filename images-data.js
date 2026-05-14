@@ -50,6 +50,20 @@ var hotdogImages = [
 		lat: 45.9237, lng: 6.8750
 	},
 	{
+		file: 'altonTowers.webp',
+		title: 'Alton Towers',
+		description: 'A disappointing theme park hot dog at Alton Towers.',
+		width: 2592, height: 1952,
+		lat: 52.9904, lng: -1.8910
+	},
+	{
+		file: 'chesterMarket.webp',
+		title: 'Chester Market',
+		description: 'A hot dog from Nice Bites at Chester\'s market.',
+		width: 1536, height: 2048,
+		lat: 53.1905, lng: -2.8917
+	},
+	{
 		file: 'chesterRaces.webp',
 		title: 'Chester Races',
 		description: 'A raceday hot dog at the historic Chester Racecourse.',

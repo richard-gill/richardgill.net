@@ -349,6 +349,10 @@
 				minWidth: 200
 			});
 
+			marker.on('click', function () {
+				this.closeTooltip();
+			});
+
 			markers.push(marker);
 		});
 
