@@ -1,0 +1,330 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { hotdogImages } from '../data/hotdogImages.js';
+
+const locations = hotdogImages.filter((img) => img.lat);
+const locationsJson = JSON.stringify(locations);
+---
+
+<BaseLayout
+	title="Hot Dog World Tour - Interactive Map"
+	description="View the interactive map of all hot dog locations from Richard Gill's world tour."
+>
+	<style>
+		:global(body) {
+			padding: 0 !important;
+			overflow: hidden;
+		}
+
+		:global(footer) {
+			display: none !important;
+		}
+
+		#map {
+			position: fixed;
+			inset: 0;
+			width: 100vw;
+			height: 100vh;
+			z-index: 0;
+			border-radius: 0;
+		}
+
+		.map-header {
+			position: fixed;
+			top: 1rem;
+			left: 50%;
+			transform: translateX(-50%);
+			z-index: 10;
+			text-align: center;
+			background: rgba(26, 26, 26, 0.85);
+			backdrop-filter: blur(6px);
+			padding: 0.6rem 1.25rem;
+			border-radius: 8px;
+			white-space: nowrap;
+		}
+
+		.map-header h1 {
+			font-size: 1.1rem;
+			font-weight: 700;
+			margin: 0;
+		}
+
+		.map-back {
+			position: fixed;
+			bottom: 2rem;
+			left: 1rem;
+			z-index: 10;
+			background: rgba(26, 26, 26, 0.85);
+			backdrop-filter: blur(6px);
+			padding: 0.4rem 0.75rem;
+			border-radius: 8px;
+			font-size: 0.85rem;
+		}
+
+		.hotdog-pin {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			width: 32px;
+			height: 40px;
+			cursor: pointer;
+			transition: transform 0.2s ease;
+		}
+
+		.hotdog-pin:hover {
+			transform: scale(1.2);
+		}
+
+		.hotdog-pin svg {
+			width: 100%;
+			height: 100%;
+		}
+
+		:global(.hotdog-tooltip) {
+			background: rgba(26, 26, 26, 0.95) !important;
+			border: none !important;
+			border-radius: 6px !important;
+			padding: 0 !important;
+		}
+
+		:global(.leaflet-tooltip-top::before) {
+			border-top-color: #f44 !important;
+		}
+
+		:global(.tooltip-content) {
+			padding: 0.75rem;
+			text-align: center;
+		}
+
+		:global(.tooltip-content img) {
+			width: 200px;
+			height: 150px;
+			object-fit: cover;
+			border-radius: 4px;
+			margin: 0 auto 0.5rem;
+			display: block;
+		}
+
+		:global(.tooltip-content h3) {
+			font-size: 0.95rem;
+			color: #fff;
+			margin-bottom: 0.25rem;
+		}
+
+		:global(.tooltip-content p) {
+			font-size: 0.85rem;
+			color: #ccc;
+		}
+
+		.leaflet-popup-content-wrapper {
+			background: rgba(26, 26, 26, 0.98) !important;
+			border-radius: 8px !important;
+			border: 3px solid #f44 !important;
+			box-shadow: 0 0 20px rgba(255, 68, 68, 0.3) !important;
+		}
+
+		.leaflet-popup-content {
+			color: #fff;
+			margin: 0 !important;
+			width: 280px !important;
+		}
+
+		.popup-content {
+			padding: 1rem;
+			text-align: center;
+		}
+
+		.popup-content img {
+			width: 100%;
+			height: 200px;
+			object-fit: cover;
+			border-radius: 6px;
+			margin-bottom: 1rem;
+			display: block;
+		}
+
+		.popup-content h3 {
+			font-size: 1.1rem;
+			font-weight: 600;
+			color: #fff;
+			margin-bottom: 0.5rem;
+		}
+
+		.popup-content p {
+			font-size: 0.9rem;
+			color: #bbb;
+			line-height: 1.5;
+		}
+
+		.leaflet-control-attribution {
+			display: none !important;
+		}
+
+		.map-nav {
+			position: fixed;
+			bottom: 1.5rem;
+			right: 1rem;
+			z-index: 10;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			gap: 1rem;
+			background: rgba(26, 26, 26, 0.85);
+			backdrop-filter: blur(6px);
+			padding: 0.5rem 1rem;
+			border-radius: 999px;
+		}
+
+		.map-nav button {
+			background: #1a1a1a;
+			border: 2px solid #f44;
+			color: #fff;
+			font-size: 1.25rem;
+			width: 2.5rem;
+			height: 2.5rem;
+			border-radius: 50%;
+			cursor: pointer;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			transition: background 0.2s;
+		}
+
+		.map-nav button:hover {
+			background: #f44;
+		}
+
+		.map-nav span {
+			font-size: 0.9rem;
+			color: #aaa;
+			min-width: 5rem;
+			text-align: center;
+		}
+	</style>
+
+	<script type="application/json" id="map-data" set:html={locationsJson}></script>
+
+	<div id="map"></div>
+
+	<div class="map-header">
+		<h1>Hot Dog World Tour Map</h1>
+	</div>
+
+	<a href="/" class="map-back text-red-400 no-underline hover:underline">← Gallery</a>
+
+	<div class="map-nav">
+		<button id="prev-marker">
+			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+				<polyline points="15 18 9 12 15 6"></polyline>
+			</svg>
+		</button>
+		<span id="marker-label">1 / 1</span>
+		<button id="next-marker">
+			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+				<polyline points="9 18 15 12 9 6"></polyline>
+			</svg>
+		</button>
+	</div>
+
+	<script>
+		import L from 'leaflet';
+		import 'leaflet/dist/leaflet.css';
+
+		const locationsData = JSON.parse(document.getElementById('map-data').textContent);
+
+		function createPinIcon() {
+			const svg = `
+				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 40">
+					<path d="M16 0c-8.837 0-16 7.163-16 16 0 8.837 16 24 16 24s16-15.163 16-24c0-8.837-7.163-16-16-16z" fill="#ff4444" />
+					<circle cx="16" cy="16" r="6" fill="#fff" />
+					<text x="16" y="18" font-size="8" text-anchor="middle" dominant-baseline="middle">🌭</text>
+				</svg>
+			`;
+			return L.divIcon({
+				html: svg,
+				iconSize: [32, 40],
+				iconAnchor: [16, 40],
+				popupAnchor: [0, -40],
+				className: 'hotdog-pin',
+			});
+		}
+
+		const map = L.map('map', { attributionControl: false }).setView([53.0, 2.5], 4);
+
+		L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+			attribution: '',
+			maxZoom: 19,
+		}).addTo(map);
+
+		const markers = [];
+
+		locationsData.forEach((loc) => {
+			const marker = L.marker([loc.lat, loc.lng], {
+				icon: createPinIcon(),
+				title: loc.title,
+			}).addTo(map);
+
+			const tooltipHtml =
+				`<div class="tooltip-content">` +
+				`<img src="/images/${loc.file}" alt="${loc.title}" loading="lazy" width="200" height="150">` +
+				`<h3>${loc.title}</h3>` +
+				`<p>${loc.description}</p>` +
+				`</div>`;
+
+			marker.bindTooltip(tooltipHtml, {
+				className: 'hotdog-tooltip',
+				direction: 'top',
+				offset: [0, 0],
+				opacity: 1,
+			});
+
+			const popupHtml =
+				`<div class="popup-content">` +
+				`<img src="/images/${loc.file}" alt="${loc.title}" loading="lazy" width="280" height="200">` +
+				`<h3>${loc.title}</h3>` +
+				`<p>${loc.description}</p>` +
+				`</div>`;
+
+			marker.bindPopup(popupHtml, { maxWidth: 320, minWidth: 200 });
+
+			marker.on('click', function () {
+				this.closeTooltip();
+				currentIndex = markers.indexOf(this);
+				flyToMarker(currentIndex);
+			});
+			marker.on('mouseover', function () {
+				markers.forEach((m) => m.closePopup());
+			});
+
+			markers.push(marker);
+		});
+
+		map.fitBounds([[34, -11], [72, 45]]);
+
+		let currentIndex = 0;
+
+		function flyToMarker(index) {
+			const loc = locationsData[index];
+			document.getElementById('marker-label').textContent = `${index + 1} / ${markers.length}`;
+			map.once('moveend', () => {
+				markers[index].openPopup();
+				map.panBy([0, -220]);
+			});
+			map.flyTo([loc.lat, loc.lng], 8);
+		}
+
+		if (markers.length > 0) {
+			document.getElementById('marker-label').textContent = `1 / ${markers.length}`;
+		}
+
+		document.getElementById('prev-marker').addEventListener('click', () => {
+			currentIndex = (currentIndex - 1 + markers.length) % markers.length;
+			flyToMarker(currentIndex);
+		});
+
+		document.getElementById('next-marker').addEventListener('click', () => {
+			currentIndex = (currentIndex + 1) % markers.length;
+			flyToMarker(currentIndex);
+		});
+	</script>
+</BaseLayout>

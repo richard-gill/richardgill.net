@@ -1,0 +1,120 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="Join Richard Gill on a Hot Dog World Tour! A photo gallery of hot dogs enjoyed in cities around the world, from Las Vegas to Berlin, Barcelona to Iceland."><title>Richard Gill&#39;s Hot Dog World Tour</title><meta http-equiv="content-language" content="en-GB"><link rel="shortcut icon" href="/favicon.ico"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><!-- Preload LCP images --><link rel="preload" href="/images/thumbs/amsterdam.webp" as="image" type="image/webp" fetchpriority="high"><link rel="preload" href="/images/thumbs/krakow.webp" as="image" type="image/webp" fetchpriority="high"><link rel="preload" href="/images/thumbs/Milan.webp" as="image" type="image/webp" fetchpriority="high"><link rel="stylesheet" href="/_astro/aboutme.CW0eQkkP.css">
+<style>.loading{background:#2a2a2a;min-height:200px}.loading img{opacity:0}.loading.shimmer{min-height:200px}.loaded{background:none;min-height:0}.loaded img{opacity:1;transition:opacity .3s ease}.hover\:scale-103:hover{transform:scale(1.03)}.overlay{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,#000000d9);padding:2rem .75rem .75rem;opacity:0;transition:opacity .3s ease}.overlay h3{font-size:.95rem;font-weight:600;color:#fff;margin-bottom:.25rem}.overlay p{font-size:.8rem;color:#ccc;line-height:1.4}.break-inside-avoid:hover .overlay{opacity:1}
+</style></head> <body class="bg-[#1a1a1a] text-white p-8 md:p-8">  <header class="text-center mb-8"> <img src="/images/thumbs/sm/hotdoglogo.webp" alt="Hot Dog World Tour Logo" width="404" height="352" class="max-w-[200px] w-[200px] h-auto mx-auto mb-4" fetchpriority="high"> <p class="max-w-[600px] mx-auto text-lg leading-relaxed text-gray-300">
+I love Hot Dogs! I hope you enjoy looking at my Hot Dogs from around the world as much as I have enjoyed
+			traveling and eating them.
+</p> </header> <main class="mb-8"> <div class="masonry" id="gallery"></div> <!-- Lightbox --> <div class="hidden fixed inset-0 bg-black/95 z-[1000] justify-center items-center flex-col" id="lightbox"> <button class="absolute top-4 right-6 text-white text-4xl cursor-pointer bg-none border-none z-[1001] hover:text-red-500" id="lightbox-close">
+&times;
+</button> <button class="absolute top-1/2 left-4 text-white text-4xl cursor-pointer bg-none border-none z-[1001] hover:text-red-500 -translate-y-1/2" id="lightbox-prev">
+&#8249;
+</button> <button class="absolute top-1/2 right-4 text-white text-4xl cursor-pointer bg-none border-none z-[1001] hover:text-red-500 -translate-y-1/2" id="lightbox-next">
+&#8250;
+</button> <div class="flex flex-col items-center max-w-[90vw] max-h-[80vh]"> <img id="lightbox-img" src="" alt="" class="max-w-[90vw] max-h-[70vh] object-contain rounded"> <div class="text-center mt-4 max-w-[600px]"> <h2 id="lightbox-title" class="text-2xl mb-2"></h2> <p id="lightbox-desc" class="text-lg text-gray-400 leading-relaxed"></p> </div> </div> <div class="absolute bottom-4 left-1/2 -translate-x-1/2 text-gray-600 text-sm" id="lightbox-counter"></div> </div> </main> <div class="text-center"> <a href="/map" class="inline-block mt-3 text-red-400 no-underline text-sm hover:underline">
+🗺️ View Interactive Map
+</a> </div> <script>(function(){const images = [{"file":"amsterdam.webp","title":"Amsterdam","description":"A Dutch hot dog in the heart of Amsterdam.","width":2688,"height":1520,"lat":52.3728,"lng":4.8922},{"file":"anfield.webp","title":"Anfield","description":"A matchday hot dog at the home of Liverpool FC.","width":1920,"height":2560,"lat":53.4308,"lng":-2.9608},{"file":"anglesey.webp","title":"Anglesey","description":"A seaside hot dog on the beautiful Isle of Anglesey.","width":960,"height":720,"lat":53.2537,"lng":-4.3168},{"file":"Barca.webp","title":"Barcelona","description":"A classic hot dog enjoyed in the heart of Catalonia.","width":1200,"height":1600,"lat":41.3874,"lng":2.1686},{"file":"Berlin.webp","title":"Berlin","description":"The iconic currywurst — a Berlin street food staple.","width":960,"height":960,"lat":52.52,"lng":13.405},{"file":"chamionx.webp","title":"Chamonix","description":"A mountain hot dog in the shadow of Mont Blanc.","width":1200,"height":1600,"lat":45.9237,"lng":6.8694},{"file":"chamonixJack.webp","title":"Chamonix Jack","description":"Sharing a hot dog moment in the French Alps.","width":1920,"height":2560,"lat":45.9237,"lng":6.875},{"file":"chesterRaces.webp","title":"Chester Races","description":"A raceday hot dog at the historic Chester Racecourse.","width":3072,"height":4096,"lat":53.1875,"lng":-2.8937},{"file":"ChesterZoo.webp","title":"Chester Zoo","description":"Refuelling with a hot dog between animal enclosures.","width":1200,"height":1600,"lat":53.2274,"lng":-2.8849},{"file":"Copenhagen.webp","title":"Copenhagen","description":"A Danish pølse — the original Scandinavian street dog.","width":1200,"height":1600,"lat":55.6761,"lng":12.5683},{"file":"costco.webp","title":"Costco","description":"The legendary £1.50 Costco hot dog — unbeatable value.","width":3904,"height":5184,"lat":53.334,"lng":-2.77},{"file":"disneylandParis.webp","title":"Disneyland Paris","description":"The happiest hot dog on earth, Disney style.","width":1536,"height":2048,"lat":48.8674,"lng":2.7836},{"file":"dublin.webp","title":"Dublin","description":"An Irish hot dog in the heart of Dublin.","width":3072,"height":4096,"lat":53.3498,"lng":-6.2603},{"file":"etihad.webp","title":"Etihad Stadium","description":"A matchday hot dog at Manchester City's ground.","width":3072,"height":4096,"lat":53.4831,"lng":-2.2004},{"file":"hungary.webp","title":"Hungary","description":"A Hungarian hot dog — Central European flavours.","width":1600,"height":1200,"lat":47.4979,"lng":19.0402},{"file":"Iceland.webp","title":"Iceland","description":"The famous Icelandic pylsur, best hot dog in the world.","width":960,"height":720,"lat":64.1466,"lng":-21.9426},{"file":"krakow.webp","title":"Krakow","description":"A Polish hot dog from the streets of Krakow.","width":3072,"height":4096,"lat":50.0647,"lng":19.945},{"file":"lasVegas.webp","title":"Las Vegas","description":"A hot dog on the Las Vegas Strip — high roller style.","width":288,"height":512,"lat":36.1699,"lng":-115.1398},{"file":"legoland.webp","title":"Legoland","description":"A brick-sized hot dog at Legoland.","width":1536,"height":2048,"lat":51.6865,"lng":-0.6484},{"file":"Les Arcs.webp","title":"Les Arcs","description":"A mountain hot dog after a day on the slopes.","width":1152,"height":864,"lat":45.5733,"lng":6.8281},{"file":"liverpoolBombedOutChurch.webp","title":"Liverpool Bombed Out Church","description":"A hot dog by Liverpool's iconic Bombed Out Church Beer Festival.","width":1600,"height":900,"lat":53.4055,"lng":-2.969},{"file":"Mayrhofen.webp","title":"Mayrhofen","description":"An Austrian hot dog in the Zillertal valley.","width":1940,"height":2592,"lat":47.159,"lng":11.8614},{"file":"Milan.webp","title":"Milan","description":"Italian style — a hot dog with a Milanese twist.","width":720,"height":960,"lat":45.4642,"lng":9.19},{"file":"Morzine.webp","title":"Morzine","description":"Après-ski perfection in the Portes du Soleil.","width":540,"height":960,"lat":46.1797,"lng":6.7094},{"file":"porthAigo.webp","title":"Porth Aigo","description":"A coastal hot dog on the Welsh shoreline.","width":5184,"height":3904,"lat":53.305,"lng":-4.63},{"file":"ramp1.webp","title":"Ramp 1","description":"A hot dog at Ramp 1 — good times and good dogs.","width":5760,"height":2592,"lat":53.39,"lng":-2.595},{"file":"runcornAsdaHotdog.webp","title":"Runcorn Asda","description":"Lego hot dog - Runcorn Asda.","width":1920,"height":2560,"lat":53.338,"lng":-2.729},{"file":"runcornCricketClub.webp","title":"Runcorn Cricket Club","description":"A hot dog at the local cricket club — summer vibes.","width":3904,"height":5184,"lat":53.335,"lng":-2.725},{"file":"runcornGolfClub.webp","title":"Runcorn Golf Club","description":"A hot dog on the 19th hole at Runcorn Golf Club.","width":3072,"height":4096,"lat":53.33,"lng":-2.71},{"file":"tenerife.webp","title":"Tenerife","description":"A sun-soaked hot dog in the Canary Islands.","width":3072,"height":4096,"lat":28.2916,"lng":-16.6291},{"file":"Tignes.webp","title":"Tignes","description":"Fuel for the French Alps, served slope-side.","width":768,"height":1024,"lat":45.4685,"lng":6.9054},{"file":"waringtonMarket.webp","title":"Warrington Market","description":"A market hot dog from Warrington's finest.","width":1920,"height":1440,"lat":53.39,"lng":-2.597},{"file":"altonTowers.webp","title":"Alton Towers","description":"A disappointing theme park hot dog at Alton Towers.","width":2592,"height":1952,"lat":52.9904,"lng":-1.891},{"file":"chesterMarket.webp","title":"Chester Market","description":"A hot dog from Nice Bites at Chester Market.","width":1536,"height":2048,"lat":53.1905,"lng":-2.8917},{"file":"wherenext.webp","title":"Where Next?","description":"The journey continues — where will the next hot dog be?","width":1024,"height":768}];
+
+		const hotdogImages = images;
+
+		// Build gallery
+		const gallery = document.getElementById('gallery');
+		const lightbox = document.getElementById('lightbox');
+		const lightboxImg = document.getElementById('lightbox-img');
+		const lightboxTitle = document.getElementById('lightbox-title');
+		const lightboxDesc = document.getElementById('lightbox-desc');
+		const lightboxCounter = document.getElementById('lightbox-counter');
+		const lightboxClose = document.getElementById('lightbox-close');
+		const lightboxPrev = document.getElementById('lightbox-prev');
+		const lightboxNext = document.getElementById('lightbox-next');
+
+		let currentIndex = 0;
+		const loaded = {};
+		const eagerLoadCount = 5;
+
+		// Create gallery items
+		hotdogImages.forEach((img, index) => {
+			const item = document.createElement('div');
+			item.className =
+				'break-inside-avoid mb-4 cursor-pointer relative overflow-hidden rounded loading';
+			item.dataset.index = index;
+
+			const image = document.createElement('img');
+			image.src = `/images/thumbs/${img.file}`;
+			image.srcset = `/images/thumbs/sm/${img.file} 500w, /images/thumbs/${img.file} 800w`;
+			image.sizes = '(max-width: 500px) 100vw, (max-width: 900px) 50vw, 33vw';
+			image.alt = img.title;
+			image.className = 'w-full h-auto block rounded transition-transform duration-300 hover:scale-103';
+			image.loading = index < eagerLoadCount ? 'eager' : 'lazy';
+			image.width = img.width;
+			image.height = img.height;
+
+			// Load event - toggle skeleton
+			image.addEventListener('load', () => {
+				item.classList.remove('loading');
+				item.classList.add('loaded');
+				loaded[index] = true;
+			});
+
+			const overlay = document.createElement('div');
+			overlay.className = 'overlay';
+			overlay.innerHTML = `<h3>${img.title}</h3><p>${img.description}</p>`;
+
+			item.appendChild(image);
+			item.appendChild(overlay);
+			item.addEventListener('click', () => openLightbox(index));
+			gallery.appendChild(item);
+		});
+
+		// Lightbox functions
+		function openLightbox(index) {
+			currentIndex = index;
+			updateLightbox();
+			lightbox.classList.remove('hidden');
+			lightbox.classList.add('flex');
+			document.body.style.overflow = 'hidden';
+		}
+
+		function closeLightbox() {
+			lightbox.classList.add('hidden');
+			lightbox.classList.remove('flex');
+			document.body.style.overflow = '';
+		}
+
+		function updateLightbox() {
+			const img = hotdogImages[currentIndex];
+			lightboxImg.src = `/images/${img.file}`;
+			lightboxImg.alt = img.title;
+			lightboxTitle.textContent = img.title;
+			lightboxDesc.textContent = img.description;
+			lightboxCounter.textContent = `${currentIndex + 1} / ${hotdogImages.length}`;
+		}
+
+		function nextImage() {
+			currentIndex = (currentIndex + 1) % hotdogImages.length;
+			updateLightbox();
+		}
+
+		function prevImage() {
+			currentIndex = (currentIndex - 1 + hotdogImages.length) % hotdogImages.length;
+			updateLightbox();
+		}
+
+		// Event listeners
+		lightboxClose.addEventListener('click', closeLightbox);
+		lightboxNext.addEventListener('click', nextImage);
+		lightboxPrev.addEventListener('click', prevImage);
+
+		lightbox.addEventListener('click', (e) => {
+			if (e.target === lightbox) closeLightbox();
+		});
+
+		// Keyboard controls
+		document.addEventListener('keydown', (e) => {
+			if (lightbox.classList.contains('hidden')) return;
+			if (e.key === 'Escape') closeLightbox();
+			if (e.key === 'ArrowRight') nextImage();
+			if (e.key === 'ArrowLeft') prevImage();
+		});
+	})();</script>   <footer class="text-center mt-8 pt-4 border-t border-gray-700"> <p class="text-gray-500 text-sm leading-relaxed">
+richardgill.net &copy; <span id="year"></span><br>
+Richard Gill's Hot Dog World Tour
+</p> </footer> <script type="module">document.getElementById("year").textContent=new Date().getFullYear();</script> </body> </html>

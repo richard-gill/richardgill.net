@@ -1,0 +1,45 @@
+---
+import '../styles/global.css';
+
+interface Props {
+	title: string;
+	description?: string;
+}
+
+const { title, description = 'Richard Gill\'s Hot Dog World Tour' } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="description" content={description} />
+		<title>{title}</title>
+		<meta http-equiv="content-language" content="en-GB" />
+
+		<link rel="shortcut icon" href="/favicon.ico" />
+		<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+
+		<!-- Preload LCP images -->
+		<link rel="preload" href="/images/thumbs/amsterdam.webp" as="image" type="image/webp" fetchpriority="high" />
+		<link rel="preload" href="/images/thumbs/krakow.webp" as="image" type="image/webp" fetchpriority="high" />
+		<link rel="preload" href="/images/thumbs/Milan.webp" as="image" type="image/webp" fetchpriority="high" />
+
+		<slot name="head" />
+	</head>
+	<body class="bg-[#1a1a1a] text-white p-8 md:p-8">
+		<slot />
+
+		<footer class="text-center mt-8 pt-4 border-t border-gray-700">
+			<p class="text-gray-500 text-sm leading-relaxed">
+				richardgill.net &copy; <span id="year"></span><br />
+				Richard Gill's Hot Dog World Tour
+			</p>
+		</footer>
+
+		<script>
+			document.getElementById('year').textContent = new Date().getFullYear();
+		</script>
+	</body>
+</html>
