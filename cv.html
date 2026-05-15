@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="CV of Richard Gill — Engineering Manager with 16 years of commercial experience in web development and team leadership.">
+	<title>Richard Gill — CV</title>
+	<style>
+		* { margin: 0; padding: 0; box-sizing: border-box; }
+
+		body {
+			font-family: system-ui, -apple-system, sans-serif;
+			background: #1a1a1a;
+			color: #fff;
+			padding: 2rem;
+		}
+
+		.cv {
+			max-width: 860px;
+			margin: 0 auto;
+		}
+
+		/* Header */
+		.cv-header {
+			border-bottom: 2px solid #f44;
+			padding-bottom: 1.5rem;
+			margin-bottom: 2rem;
+		}
+
+		.cv-header h1 {
+			font-size: 2.4rem;
+			font-weight: 700;
+			letter-spacing: -0.5px;
+		}
+
+		.cv-header .contact {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 0.75rem 2rem;
+			margin-top: 0.75rem;
+			color: #aaa;
+			font-size: 0.95rem;
+		}
+
+		.cv-header .contact a {
+			color: #f44;
+			text-decoration: none;
+		}
+
+		.cv-header .contact a:hover {
+			text-decoration: underline;
+		}
+
+		/* Sections */
+		section {
+			margin-bottom: 2.5rem;
+		}
+
+		section h2 {
+			font-size: 1rem;
+			font-weight: 600;
+			text-transform: uppercase;
+			letter-spacing: 1.5px;
+			color: #f44;
+			border-bottom: 1px solid #333;
+			padding-bottom: 0.4rem;
+			margin-bottom: 1.25rem;
+		}
+
+		/* Profile */
+		.profile p {
+			line-height: 1.75;
+			color: #ccc;
+			font-size: 0.97rem;
+		}
+
+		.profile p + p {
+			margin-top: 0.75rem;
+		}
+
+		/* Experience */
+		.job {
+			margin-bottom: 1.75rem;
+		}
+
+		.job-header {
+			display: flex;
+			justify-content: space-between;
+			align-items: baseline;
+			flex-wrap: wrap;
+			gap: 0.25rem;
+			margin-bottom: 0.5rem;
+		}
+
+		.job-title {
+			font-size: 1.05rem;
+			font-weight: 600;
+		}
+
+		.job-company {
+			color: #aaa;
+			font-size: 0.9rem;
+		}
+
+		.job-dates {
+			color: #666;
+			font-size: 0.88rem;
+			white-space: nowrap;
+		}
+
+		.job p {
+			color: #ccc;
+			font-size: 0.93rem;
+			line-height: 1.7;
+		}
+
+		/* Skills */
+		.skills-list {
+			list-style: none;
+			display: grid;
+			grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+			gap: 0.5rem;
+		}
+
+		.skills-list li {
+			color: #ccc;
+			font-size: 0.93rem;
+			padding-left: 1rem;
+			position: relative;
+		}
+
+		.skills-list li::before {
+			content: '—';
+			position: absolute;
+			left: 0;
+			color: #f44;
+		}
+
+		/* Education */
+		.edu-item {
+			display: flex;
+			justify-content: space-between;
+			align-items: baseline;
+			flex-wrap: wrap;
+			gap: 0.2rem;
+			margin-bottom: 0.75rem;
+		}
+
+		.edu-item .edu-details {
+			color: #ccc;
+			font-size: 0.93rem;
+		}
+
+		.edu-item .edu-dates {
+			color: #666;
+			font-size: 0.88rem;
+			white-space: nowrap;
+		}
+
+		.edu-item .edu-note {
+			width: 100%;
+			color: #666;
+			font-size: 0.85rem;
+		}
+
+		/* Interests */
+		.interests p {
+			color: #ccc;
+			font-size: 0.93rem;
+			line-height: 1.7;
+		}
+
+		.interests p + p {
+			margin-top: 0.5rem;
+		}
+
+		/* Hotdog banner */
+		.hotdog-banner {
+			width: 100%;
+			max-height: 300px;
+			object-fit: cover;
+			object-position: center;
+			border-radius: 6px;
+			margin-bottom: 2rem;
+			display: block;
+		}
+
+		/* Footer */
+		footer {
+			text-align: center;
+			margin-top: 2rem;
+			padding: 1rem;
+			color: #888;
+			font-size: 0.9rem;
+			line-height: 1.6;
+			border-top: 1px solid #333;
+		}
+
+		footer a {
+			color: #f44;
+			text-decoration: none;
+		}
+
+		footer a:hover {
+			text-decoration: underline;
+		}
+
+		@media (max-width: 600px) {
+			body { padding: 1rem; }
+			.cv-header h1 { font-size: 1.8rem; }
+			.job-header { flex-direction: column; }
+			.edu-item { flex-direction: column; }
+		}
+
+		@media print {
+			body { background: #fff; color: #000; padding: 0; }
+			.cv { max-width: 100%; }
+			section h2 { color: #c00; border-color: #ccc; }
+			.cv-header { border-color: #c00; }
+			.cv-header .contact a { color: #c00; }
+			.job p, .profile p, .interests p, .edu-item .edu-details, .skills-list li { color: #333; }
+			.job-company, .job-dates, .edu-item .edu-dates, .edu-item .edu-note { color: #666; }
+			.skills-list li::before { color: #c00; }
+			footer { display: none; }
+		}
+	</style>
+</head>
+<body>
+	<div class="cv">
+
+		<img id="hotdog-banner" class="hotdog-banner" src="" alt="">
+
+		<header class="cv-header">
+			<h1>Richard Gill</h1>
+			<div class="contact">
+				<span>07519 878764</span>
+				<a href="mailto:richard.gill1986@gmail.com">richard.gill1986@gmail.com</a>
+				<a href="https://www.linkedin.com/in/richard-gill-56bb5347/" target="_blank" rel="noopener">LinkedIn</a>
+			</div>
+		</header>
+
+		<section class="profile">
+			<h2>Personal Profile</h2>
+			<p>I am a highly motivated and passionate person with sixteen years' experience in the commercial industry. I have worked for The Hut Group (THG) for the last fourteen years, working my way up through various development roles. For the last three and a half years I have been working as an Engineering Manager, with my team responsible for delivering websites for clients such as Cult Beauty, Berghaus, Kickers, Lyle and Scott, Nuxe and many more well-known brands. Since January 2024 I have run the Nutrition Tech Squad, driving change across the division.</p>
+			<p>My knowledge and skills have developed considerably during my time at THG, with experience across a range of web technologies and programming languages including Gulp, SASS, Tailwind CSS, Astro, HTML, JavaScript, SQL, Google Tag Manager, Google Analytics, Jira and GitHub. I have also attended several internal training schemes which have helped develop my interpersonal and professional management skills — I won an award for fearless leadership.</p>
+			<p>After fourteen years at THG I have learnt to be a very resilient manager. I manage my stress through regular 4:30am gym sessions and spending time with my family. I have a flexible working approach and will always go above and beyond. I am motivated by results and delivery. My values are to lead by example, teamwork, accountability, empathy, honesty and trust.</p>
+		</section>
+
+		<section>
+			<h2>Experience</h2>
+
+			<div class="job">
+				<div class="job-header">
+					<span class="job-title">Head of Engineering <span class="job-company">— Myprotein, THG PLC</span></span>
+					<span class="job-dates">May 2025 – Present</span>
+				</div>
+				<p>Leading the evolution of Myprotein.com with a team of 4 developers and 2 UX designers. With the adoption of AI the team and I have been able to deliver features quicker than ever, continuously improving the Mybrand websites over the last 12 months.</p>
+			</div>
+
+			<div class="job">
+				<div class="job-header">
+					<span class="job-title">Engineering Manager – Nutrition <span class="job-company">— THG</span></span>
+					<span class="job-dates">Jan 2024 – May 2025</span>
+				</div>
+				<p>Led the fully remote THG Nutrition tech squad. Under my leadership the team delivered a fully functioning platform in the first 3 months of forming, worked closely with PWC and their in-house design team for 6 weeks to deliver new templates for MP.com, smoothly migrated the 3 highest-revenue locales (com, Germany and Japan) onto the new platform without issues or downtime, and delivered a new Nutrition-specific product page alongside many other BAU changes. Worked directly with senior leadership, CRO and UX to push the platform forward with core web vitals at heart, resulting in faster websites with improved user experience. During Q1 2025, migrated all 64 Nutrition websites (Myprotein, Myvitamins and Myvegan) onto the Altitude platform.</p>
+			</div>
+
+			<div class="job">
+				<div class="job-header">
+					<span class="job-title">Engineering Manager <span class="job-company">— THG</span></span>
+					<span class="job-dates">May 2021 – Dec 2024</span>
+				</div>
+				<p>Managed a team of 10 software engineers with 2 lead engineers reporting directly to me. Provided 360 feedback, managed team performance and development, and was responsible for site builds and BAU workstreams. In 2021 we delivered 134 websites between two teams — 81 delivered by my team alone. Used data from JIRA to analyse team efficiency and sprint progress, providing feedback to engineers to promote self-development. During the pandemic we adopted a remote working model and maintained high throughput throughout, taking on 6 new staff members whom I was actively involved in interviewing, inducting and mentoring. Worked closely with Project Managers, Account Directors, UX Designers and Trading Teams to ensure every client deadline was met. Won Tech Team of the Year in 2021. Also recently completed my Scrum Master certification in my own time.</p>
+			</div>
+
+			<div class="job">
+				<div class="job-header">
+					<span class="job-title">Tech Lead <span class="job-company">— THG</span></span>
+					<span class="job-dates">March 2017 – May 2021</span>
+				</div>
+				<p>Responsible for a team of up to 11 full-time employees and a small number of interns, running four parallel workstreams. Acted as Manager, Scrum Master, Developer and Mentor across a range of agile methodologies. Focused increasingly on the management side — conducting regular one-to-ones to develop, support and motivate the team.</p>
+			</div>
+
+			<div class="job">
+				<div class="job-header">
+					<span class="job-title">International Rollout Lead <span class="job-company">— THG</span></span>
+					<span class="job-dates">Oct 2016 – March 2017</span>
+				</div>
+				<p>Led THG's expansion into international territories, directing the development of over 50 international websites across 28 different languages. Worked closely with representatives from each business division to plan, develop and deliver the project. Nominated as Team of the Year at the end of 2016, and personally nominated for Tech Employee of the Year.</p>
+			</div>
+
+			<div class="job">
+				<div class="job-header">
+					<span class="job-title">Front End Web Developer <span class="job-company">— THG</span></span>
+					<span class="job-dates">2012 – Nov 2016</span>
+				</div>
+				<p>Joined THG as a Front End Developer when the team had 8 developers maintaining 30 websites. As THG more than doubled in size those 30 websites grew to over 100, and I grew with the company.</p>
+			</div>
+
+			<div class="job">
+				<div class="job-header">
+					<span class="job-title">UI Designer / Developer progression <span class="job-company">— Martin Dawes Systems</span></span>
+					<span class="job-dates">Sept 2007 – Nov 2012</span>
+				</div>
+				<p>Progressed through a series of roles: Web Designer (2007–2008), Graduation Scheme (2008–2009), UI Designer (2009–2011), UI Designer / Developer (2011–2012).</p>
+			</div>
+		</section>
+
+		<section>
+			<h2>Skills</h2>
+			<ul class="skills-list">
+				<li>Jira and workflow management</li>
+				<li>Scrum and other agile techniques</li>
+				<li>Good organisational and time management skills</li>
+				<li>Good presentation skills using a variety of media</li>
+				<li>Excellent interpersonal skills</li>
+				<li>Excellent work ethic</li>
+				<li>Excellent attention to detail</li>
+				<li>Working independently or as part of a team</li>
+				<li>Ability to work under pressure and to tight deadlines</li>
+				<li>Willingness to work flexibly</li>
+			</ul>
+		</section>
+
+		<section>
+			<h2>Education</h2>
+
+			<div class="edu-item">
+				<span class="edu-details">BA (Hons) Digital Arts — Liverpool John Moores University</span>
+				<span class="edu-dates">2006 – 2007</span>
+				<span class="edu-note">via St Helens College</span>
+			</div>
+
+			<div class="edu-item">
+				<span class="edu-details">Foundation Degree in Arts (Multimedia Arts and Animation) — Liverpool John Moores University</span>
+				<span class="edu-dates">2004 – 2006</span>
+				<span class="edu-note">via St Helens College</span>
+			</div>
+
+			<div class="edu-item">
+				<span class="edu-details">BTEC National Diploma in Multimedia — Halton College, Runcorn</span>
+				<span class="edu-dates">2002 – 2004</span>
+			</div>
+
+			<div class="edu-item">
+				<span class="edu-details">8 GCSEs Grade C and above — Helsby High School</span>
+				<span class="edu-dates">1997 – 2002</span>
+			</div>
+		</section>
+
+		<section class="interests">
+			<h2>Interests</h2>
+			<p>I am a dedicated family man and love spending time with my wife and two children. We enjoy snowboarding, skateboarding, camping and the beach.</p>
+			<p>I am interested in all aspects of new technology, games platforms and computer software, and am enthusiastic about maintaining a healthy lifestyle through regular gym training. I also have a keen interest in travel and movies.</p>
+		</section>
+
+		<section>
+			<h2>References</h2>
+			<p style="color:#ccc;font-size:0.93rem;">Available upon request.</p>
+		</section>
+
+	</div>
+
+	<footer>
+		<a href="index.html">← Back to the good stuff</a><br>
+		<span style="margin-top:0.5rem;display:inline-block">richardgill.net &copy; <span id="year"></span></span>
+	</footer>
+
+	<script src="images-data.js"></script>
+	<script>
+		document.getElementById('year').textContent = new Date().getFullYear();
+
+		var pool = hotdogImages.filter(function(img) { return img.lat; });
+		var pick = pool[Math.floor(Math.random() * pool.length)];
+		var banner = document.getElementById('hotdog-banner');
+		banner.src = 'images/' + pick.file;
+		banner.alt = pick.title;
+	</script>
+</body>
+</html>

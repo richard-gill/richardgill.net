@@ -225,12 +225,6 @@ var hotdogImages = [
 		lat: 53.3900, lng: -2.5970
 	},
 	{
-		file: 'wherenext.webp',
-		title: 'Where Next?',
-		description: 'The journey continues — where will the next hot dog be?',
-		width: 1024, height: 768
-	},
-	{
 		file: 'altonTowers.webp',
 		title: 'Alton Towers',
 		description: 'A disappointing theme park hot dog at Alton Towers.',
@@ -243,5 +237,11 @@ var hotdogImages = [
 		description: 'A hot dog from Nice Bites at Chester Market.',
 		width: 1536, height: 2048,
 		lat: 53.1905, lng: -2.8917
+	},
+	{
+		file: 'wherenext.webp',
+		title: 'Where Next?',
+		description: 'The journey continues — where will the next hot dog be?',
+		width: 1024, height: 768
 	}
 ];
