@@ -1,405 +1,801 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { hotdogImages } from '../data/hotdogImages.js';
-
-const imagesWithCoords = hotdogImages.filter((img) => img.lat);
-const imagesJson = JSON.stringify(imagesWithCoords);
 ---
 
-<BaseLayout title="Richard Gill — CV" description="CV of Richard Gill — Engineering Manager with 16 years of commercial experience in web development and team leadership.">
+<BaseLayout title="Richard Gill — About Me" description="About Richard Gill — Engineering Manager with 16 years of commercial experience in web development and team leadership.">
 	<style>
-		.cv {
-			max-width: 42rem;
+		/* Break out of BaseLayout's p-8 padding */
+		.cv-page {
+			margin: -2rem -2rem 0;
+		}
+
+		/* ── SHARED ── */
+		.inner {
+			max-width: 52rem;
 			margin: 0 auto;
+			padding: 0 2rem;
 		}
 
-		.cv-header {
-			border-bottom: 2px solid #f44;
-			padding-bottom: 1.5rem;
-			margin-bottom: 2rem;
+		/* ── HERO ── */
+		.hero {
+			background: #0d0d0d;
+			padding: 3.5rem 0 0;
+			position: relative;
+			overflow: hidden;
 		}
 
-		.cv-header h1 {
-			font-size: 2.25rem;
-			font-weight: 700;
-			margin-bottom: 0.75rem;
-		}
-
-		.cv-contact {
-			display: flex;
-			flex-wrap: wrap;
-			gap: 2rem;
-			color: #aaa;
-			font-size: 0.875rem;
-		}
-
-		.cv-contact a {
-			color: #f44;
-			text-decoration: none;
-		}
-
-		.cv-contact a:hover {
-			text-decoration: underline;
-		}
-
-		.cv-section {
-			margin-bottom: 2.5rem;
-		}
-
-		.cv-section h2 {
-			font-size: 0.875rem;
-			font-weight: 600;
-			text-transform: uppercase;
-			letter-spacing: 0.125rem;
-			color: #f44;
-			border-bottom: 1px solid #444;
-			padding-bottom: 0.25rem;
-			margin-bottom: 1.25rem;
-		}
-
-		.cv-job {
-			margin-bottom: 1.75rem;
-		}
-
-		.cv-job-header {
-			display: flex;
-			justify-content: space-between;
-			align-items: baseline;
-			flex-wrap: wrap;
-			gap: 0.25rem;
-			margin-bottom: 0.5rem;
-		}
-
-		.cv-job-title {
-			font-size: 1.05rem;
-			font-weight: 600;
-		}
-
-		.cv-job-company {
-			color: #aaa;
-			font-size: 0.875rem;
-		}
-
-		.cv-job-dates {
-			color: #666;
-			font-size: 0.875rem;
-			white-space: nowrap;
-		}
-
-		.cv-job p {
-			color: #ccc;
-			font-size: 0.9375rem;
-			line-height: 1.75;
-		}
-
-		.cv-profile p {
-			color: #ccc;
-			font-size: 0.9375rem;
-			line-height: 1.75;
-			margin-bottom: 0.75rem;
-		}
-
-		.cv-skills {
-			display: grid;
-			grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-			gap: 0.5rem;
-		}
-
-		.cv-skills li {
-			list-style: none;
-			color: #ccc;
-			font-size: 0.9375rem;
-			padding-left: 1rem;
+		.hero-inner {
+			max-width: 52rem;
+			margin: 0 auto;
+			padding: 0 2rem 3.5rem;
 			position: relative;
 		}
 
-		.cv-skills li::before {
-			content: '—';
+		.hero-monogram {
 			position: absolute;
-			left: 0;
-			color: #f44;
+			top: -1rem;
+			right: 1.5rem;
+			font-size: 14rem;
+			font-weight: 900;
+			color: #1a1a1a;
+			line-height: 1;
+			letter-spacing: -0.05em;
+			pointer-events: none;
+			user-select: none;
 		}
 
-		.cv-edu {
-			display: flex;
-			justify-content: space-between;
-			align-items: baseline;
-			flex-wrap: wrap;
-			gap: 0.25rem;
-			margin-bottom: 0.75rem;
+		.hero-subtitle {
+			font-size: 0.7rem;
+			font-weight: 700;
+			text-transform: uppercase;
+			letter-spacing: 0.18em;
+			color: #ff4444;
+			margin-bottom: 1rem;
 		}
 
-		.cv-edu-details {
-			color: #ccc;
-			font-size: 0.9375rem;
-		}
-
-		.cv-edu-dates {
-			color: #666;
-			font-size: 0.875rem;
-			white-space: nowrap;
-		}
-
-		.cv-edu-note {
-			width: 100%;
-			color: #666;
-			font-size: 0.825rem;
-		}
-
-		.cv-interests p {
-			color: #ccc;
-			font-size: 0.9375rem;
-			line-height: 1.75;
-			margin-bottom: 0.5rem;
-		}
-
-		.hotdog-banner {
-			width: 100%;
-			max-height: 300px;
-			object-fit: cover;
-			object-position: center;
-			border-radius: 6px;
+		.hero-name {
+			font-size: clamp(3.5rem, 10vw, 6rem);
+			font-weight: 900;
+			text-transform: uppercase;
+			line-height: 0.9;
+			letter-spacing: -0.02em;
 			margin-bottom: 2rem;
+		}
+
+		.hero-name-first {
+			color: #fff;
 			display: block;
 		}
 
-		@media print {
-			body {
-				background: #fff;
-				color: #000;
-				padding: 0;
+		.hero-name-last {
+			color: #ff4444;
+			display: block;
+		}
+
+		.hero-contact {
+			display: flex;
+			flex-direction: column;
+			gap: 0.3rem;
+			margin-bottom: 2.5rem;
+			font-size: 0.875rem;
+			color: #888;
+		}
+
+		.hero-contact a {
+			color: #888;
+			text-decoration: none;
+		}
+
+		.hero-contact a:hover {
+			color: #ff4444;
+		}
+
+		.hero-tagline {
+			font-style: italic;
+			font-size: 1.25rem;
+			line-height: 1.5;
+			color: #ccc;
+			margin-bottom: 2rem;
+			max-width: 28rem;
+		}
+
+		.hero-tagline strong {
+			font-style: normal;
+			color: #fff;
+		}
+
+		.hero-cta {
+			display: inline-flex;
+			align-items: center;
+			gap: 0.75rem;
+			background: #ff4444;
+			color: #fff;
+			text-decoration: none;
+			font-size: 0.75rem;
+			font-weight: 700;
+			text-transform: uppercase;
+			letter-spacing: 0.15em;
+			padding: 1rem 2rem;
+		}
+
+		.hero-cta:hover {
+			background: #cc2222;
+		}
+
+		/* ── STATS BAR ── */
+		.stats-bar {
+			background: #c41d1d;
+			padding: 2rem 0;
+		}
+
+		.stats-grid {
+			display: grid;
+			grid-template-columns: repeat(4, 1fr);
+			gap: 0;
+			max-width: 52rem;
+			margin: 0 auto;
+			padding: 0 2rem;
+		}
+
+		.stat {
+			text-align: center;
+			position: relative;
+		}
+
+		.stat + .stat::before {
+			content: '';
+			position: absolute;
+			left: 0;
+			top: 10%;
+			height: 80%;
+			width: 1px;
+			background: rgba(255,255,255,0.25);
+		}
+
+		.stat-number {
+			font-size: 2.5rem;
+			font-weight: 900;
+			color: #fff;
+			line-height: 1;
+			display: block;
+		}
+
+		.stat-label {
+			font-size: 0.6rem;
+			font-weight: 700;
+			text-transform: uppercase;
+			letter-spacing: 0.12em;
+			color: rgba(255,255,255,0.7);
+			display: block;
+			margin-top: 0.4rem;
+		}
+
+		/* ── DARK CONTENT SECTIONS ── */
+		.cream {
+			background: #1a1a1a;
+			color: #fff;
+		}
+
+		/* ── WHO IS THIS GUY ── */
+		.who-section {
+			padding: 4rem 0;
+		}
+
+		.who-card {
+			background: #111;
+			color: #fff;
+			padding: 3rem;
+			border-radius: 4px;
+			max-width: 44rem;
+			margin: 0 auto;
+			position: relative;
+		}
+
+		.who-card h2 {
+			font-size: 1.6rem;
+			font-weight: 900;
+			text-transform: uppercase;
+			letter-spacing: 0.05em;
+			margin-bottom: 2rem;
+			padding-bottom: 1rem;
+			border-bottom: 1px solid #333;
+		}
+
+		.who-traits {
+			display: flex;
+			flex-direction: column;
+			gap: 1.5rem;
+		}
+
+		.who-trait {
+			border-left: 3px solid #ff4444;
+			padding-left: 1rem;
+		}
+
+		.who-trait h3 {
+			font-size: 1rem;
+			font-weight: 700;
+			color: #fff;
+			margin-bottom: 0.3rem;
+		}
+
+		.who-trait p {
+			font-size: 0.9rem;
+			color: #aaa;
+			line-height: 1.6;
+		}
+
+		.who-card-footer {
+			margin-top: 2rem;
+			padding-top: 1.5rem;
+			border-top: 1px solid #222;
+			font-style: italic;
+			font-size: 0.9rem;
+			color: #666;
+			text-align: center;
+		}
+
+		/* ── SECTION HEADER ── */
+		.section-header {
+			display: flex;
+			align-items: baseline;
+			gap: 1rem;
+			margin-bottom: 2.5rem;
+			padding-bottom: 1rem;
+			border-bottom: 1px solid #444;
+		}
+
+		.section-num {
+			font-size: 0.75rem;
+			font-weight: 700;
+			color: #ff4444;
+		}
+
+		.section-title {
+			font-size: 1.6rem;
+			font-weight: 900;
+			text-transform: uppercase;
+			letter-spacing: 0.08em;
+			color: #fff;
+			flex: 1;
+		}
+
+		.section-line {
+			flex: 1;
+			height: 1px;
+			background: #444;
+			align-self: center;
+		}
+
+		/* ── CAREER ── */
+		.career-section {
+			padding: 4rem 0;
+		}
+
+		.job {
+			padding-bottom: 2.5rem;
+			margin-bottom: 2.5rem;
+			border-bottom: 1px solid #333;
+		}
+
+		.job:last-child {
+			border-bottom: none;
+			margin-bottom: 0;
+			padding-bottom: 0;
+		}
+
+		.job-date {
+			font-size: 0.75rem;
+			font-weight: 700;
+			text-transform: uppercase;
+			letter-spacing: 0.12em;
+			color: #ff4444;
+			margin-bottom: 0.3rem;
+		}
+
+		.job-company {
+			font-size: 0.75rem;
+			font-weight: 700;
+			text-transform: uppercase;
+			letter-spacing: 0.1em;
+			color: #888;
+			margin-bottom: 0.5rem;
+		}
+
+		.job-badge {
+			display: inline-block;
+			background: #ff4444;
+			color: #fff;
+			font-size: 0.6rem;
+			font-weight: 700;
+			text-transform: uppercase;
+			letter-spacing: 0.12em;
+			padding: 0.2rem 0.6rem;
+			margin-bottom: 0.5rem;
+		}
+
+		.job-title {
+			font-size: 1.5rem;
+			font-weight: 700;
+			color: #fff;
+			margin-bottom: 0.3rem;
+			line-height: 1.2;
+		}
+
+		.job-summary {
+			font-style: italic;
+			font-size: 0.9rem;
+			color: #888;
+			margin-bottom: 1rem;
+		}
+
+		.job-bullets {
+			list-style: none;
+			padding: 0;
+			margin: 0;
+			display: flex;
+			flex-direction: column;
+			gap: 0.5rem;
+		}
+
+		.job-bullets li {
+			display: flex;
+			gap: 0.75rem;
+			font-size: 0.9rem;
+			color: #ccc;
+			line-height: 1.5;
+		}
+
+		.job-bullets li::before {
+			content: '—';
+			color: #ff4444;
+			flex-shrink: 0;
+			font-weight: 700;
+		}
+
+		.job-bullets strong {
+			font-weight: 700;
+		}
+
+		/* ── SKILLS ── */
+		.skills-section {
+			padding: 4rem 0;
+		}
+
+		.skills-category {
+			margin-bottom: 2rem;
+		}
+
+		.skills-category h3 {
+			font-size: 0.75rem;
+			font-weight: 700;
+			text-transform: uppercase;
+			letter-spacing: 0.15em;
+			color: #fff;
+			margin-bottom: 0.75rem;
+			padding-bottom: 0.5rem;
+			border-bottom: 2px solid #ff4444;
+			display: inline-block;
+		}
+
+		.pills {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 0.5rem;
+			margin-top: 0.75rem;
+		}
+
+		.pill {
+			border: 1.5px solid #444;
+			border-radius: 999px;
+			padding: 0.35rem 0.9rem;
+			font-size: 0.85rem;
+			color: #ccc;
+		}
+
+		/* ── TESTIMONIALS ── */
+		.testimonials-section {
+			padding: 4rem 0;
+		}
+
+		.testimonial-cards {
+			display: flex;
+			flex-direction: column;
+			gap: 1rem;
+		}
+
+		.testimonial-card {
+			background: #252525;
+			padding: 2rem;
+			border-radius: 4px;
+		}
+
+		.testimonial-quote-mark {
+			font-size: 2rem;
+			font-weight: 900;
+			color: #ff4444;
+			line-height: 1;
+			margin-bottom: 0.5rem;
+		}
+
+		.testimonial-text {
+			font-style: italic;
+			font-size: 0.9rem;
+			color: #aaa;
+			line-height: 1.7;
+			margin-bottom: 1rem;
+		}
+
+		.testimonial-name {
+			font-size: 0.7rem;
+			font-weight: 700;
+			text-transform: uppercase;
+			letter-spacing: 0.12em;
+			color: #666;
+		}
+
+		/* ── CREDENTIALS ── */
+		.credentials-section {
+			padding: 4rem 0;
+		}
+
+		.credential {
+			padding-bottom: 1.5rem;
+			margin-bottom: 1.5rem;
+			border-bottom: 1px solid #333;
+		}
+
+		.credential:last-child {
+			border-bottom: none;
+		}
+
+		.credential-year {
+			font-size: 0.75rem;
+			font-weight: 700;
+			text-transform: uppercase;
+			letter-spacing: 0.12em;
+			color: #ff4444;
+			margin-bottom: 0.3rem;
+		}
+
+		.credential-title {
+			font-size: 1.1rem;
+			font-weight: 700;
+			color: #fff;
+			margin-bottom: 0.2rem;
+		}
+
+		.credential-institution {
+			font-size: 0.875rem;
+			color: #888;
+		}
+
+		/* ── FOOTER BAND ── */
+		.cv-footer-band {
+			background: #0d0d0d;
+			padding: 2rem;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			flex-wrap: wrap;
+			gap: 1rem;
+			margin-top: 0;
+		}
+
+		.cv-footer-cta {
+			font-size: 0.7rem;
+			font-weight: 700;
+			text-transform: uppercase;
+			letter-spacing: 0.18em;
+			color: #ff4444;
+		}
+
+		.cv-footer-ref {
+			font-size: 0.8rem;
+			color: #555;
+		}
+
+		/* ── RESPONSIVE ── */
+		@media (max-width: 600px) {
+			.stats-grid {
+				grid-template-columns: repeat(2, 1fr);
+				gap: 1.5rem;
 			}
 
-			.no-print {
+			.stat + .stat::before {
 				display: none;
 			}
 
-			.cv-section h2 {
-				color: #c00;
-				border-color: #ccc;
+			.who-card {
+				padding: 2rem 1.5rem;
 			}
 
-			.cv-header {
-				border-color: #c00;
-			}
-
-			.cv-contact a {
-				color: #c00;
-			}
-
-			.cv-job p,
-			.cv-profile p,
-			.cv-interests p,
-			.cv-edu-details,
-			.cv-skills li {
-				color: #333;
-			}
-
-			.cv-job-company,
-			.cv-job-dates,
-			.cv-edu-dates,
-			.cv-edu-note {
-				color: #666;
-			}
-
-			.cv-skills li::before {
-				color: #c00;
+			.hero-monogram {
+				font-size: 8rem;
+				opacity: 0.5;
 			}
 		}
 	</style>
 
-	<div class="cv">
-		<img id="hotdog-banner" class="hotdog-banner" src="" alt="" width="1024" height="300" />
+	<div class="cv-page">
 
-		<header class="cv-header">
-			<h1>Richard Gill</h1>
-			<div class="cv-contact">
-				<span>07519 878764</span>
-				<a href="mailto:richard.gill1986@gmail.com">richard.gill1986@gmail.com</a>
-				<a href="https://www.linkedin.com/in/richard-gill-56bb5347/" target="_blank" rel="noopener">LinkedIn</a>
-				<a href="https://open.spotify.com/playlist/5mRht3M1cXxPNn3EGQjlcn?si=2KP5ZGMMQg610pw-S0hpyg" target="_blank" rel="noopener">Spotify</a>
-			</div>
-		</header>
-
-		<section class="cv-section cv-profile">
-			<h2>Personal Profile</h2>
-			<p>
-				I am a highly motivated and passionate person with sixteen years' experience in the commercial industry. I
-				have worked for The Hut Group (THG) for the last fourteen years, working my way up through various development
-				roles. For the last year I have been Head of Development for their Nutrition websites Myprotein.com and Myvitamins.com.
-			</p>
-			<p>
-				My knowledge and skills have developed considerably during my time at THG, with experience across a range of
-				web technologies and programming languages. I have also attended several internal training schemes
-				which have helped develop my interpersonal and professional management skills.
-			</p>
-			<p>
-				After fourteen years at THG I have learnt to be a very resilient manager. I manage my stress through regular
-				4:30am gym sessions and spending time with my family. I have a flexible working approach and will always go
-				above and beyond. I am motivated by results and delivery. My values are to lead by example, teamwork,
-				accountability, empathy, honesty and trust.
-			</p>
-		</section>
-
-		<section class="cv-section">
-			<h2>Experience</h2>
-
-			<div class="cv-job">
-				<div class="cv-job-header">
-					<span class="cv-job-title">Head of Engineering <span class="cv-job-company">— Myprotein, THG PLC</span></span>
-					<span class="cv-job-dates">May 2025 – Present</span>
+		<!-- HERO -->
+		<section class="hero">
+			<div class="hero-inner">
+				<div class="hero-monogram" aria-hidden="true">RG</div>
+				<p class="hero-subtitle">Engineering Leader · E-Commerce · Builder of Great Teams</p>
+				<h1 class="hero-name">
+					<span class="hero-name-first">Richard</span>
+					<span class="hero-name-last">Gill</span>
+				</h1>
+				<div class="hero-contact">
+					<span>07519 878764</span>
+					<a href="mailto:richard.gill1986@gmail.com">richard.gill1986@gmail.com</a>
+					<a href="https://www.linkedin.com/in/richard-gill-56bb5347/" target="_blank" rel="noopener">LinkedIn</a>
+					<a href="https://open.spotify.com/playlist/5mRht3M1cXxPNn3EGQjlcn?si=2KP5ZGMMQg610pw-S0hpyg" target="_blank" rel="noopener">Spotify</a>
+					<a href="https://www.richardgill.net">richardgill.net</a>
 				</div>
-				<p>
-					
+				<p class="hero-tagline">
+					16 years. One company. <strong>Endless challenges embraced.</strong><br />
+					Now ready to bring that same energy somewhere new.
 				</p>
-			</div>
-
-			<div class="cv-job">
-				<div class="cv-job-header">
-					<span class="cv-job-title">Engineering Manager – Nutrition <span class="cv-job-company">— THG</span></span>
-					<span class="cv-job-dates">Jan 2024 – May 2025</span>
-				</div>
-				<p>
-					Led the fully remote THG Nutrition tech squad. Under my leadership the team delivered a fully functioning
-					platform in the first 3 months of forming, worked closely with PWC and their in-house design team for 6
-					weeks to deliver new templates for MP.com, smoothly migrated the 3 highest-revenue locales (com, Germany and
-					Japan) onto the new platform without issues or downtime, and delivered a new Nutrition-specific product page
-					alongside many other BAU changes. Worked directly with senior leadership, CRO and UX to push the platform
-					forward with core web vitals at heart, resulting in faster websites with improved user experience. During Q1
-					2025, migrated all 64 Nutrition websites (Myprotein, Myvitamins and Myvegan) onto the Altitude platform.
-				</p>
-			</div>
-
-			<div class="cv-job">
-				<div class="cv-job-header">
-					<span class="cv-job-title">Engineering Manager <span class="cv-job-company">— THG</span></span>
-					<span class="cv-job-dates">May 2021 – Dec 2024</span>
-				</div>
-				<p>
-					Managed a team of 10 software engineers with 2 lead engineers reporting directly to me. Provided 360 feedback,
-					managed team performance and development, and was responsible for site builds and BAU workstreams. In 2021 we
-					delivered 134 websites between two teams — 81 delivered by my team alone. Used data from JIRA to analyse team
-					efficiency and sprint progress, providing feedback to engineers to promote self-development. During the pandemic
-					we adopted a remote working model and maintained high throughput throughout, taking on 6 new staff members whom
-					I was actively involved in interviewing, inducting and mentoring. Worked closely with Project Managers, Account
-					Directors, UX Designers and Trading Teams to ensure every client deadline was met. Won Tech Team of the Year in
-					2021. Also recently completed my Scrum Master certification in my own time.
-				</p>
-			</div>
-
-			<div class="cv-job">
-				<div class="cv-job-header">
-					<span class="cv-job-title">Tech Lead <span class="cv-job-company">— THG</span></span>
-					<span class="cv-job-dates">March 2017 – May 2021</span>
-				</div>
-				<p>
-					Responsible for a team of up to 11 full-time employees and a small number of interns, running four parallel
-					workstreams. Acted as Manager, Scrum Master, Developer and Mentor across a range of agile methodologies.
-					Focused increasingly on the management side — conducting regular one-to-ones to develop, support and motivate
-					the team.
-				</p>
-			</div>
-
-			<div class="cv-job">
-				<div class="cv-job-header">
-					<span class="cv-job-title">International Rollout Lead <span class="cv-job-company">— THG</span></span>
-					<span class="cv-job-dates">Oct 2016 – March 2017</span>
-				</div>
-				<p>
-					Led THG's expansion into international territories, directing the development of over 50 international websites
-					across 28 different languages. Worked closely with representatives from each business division to plan, develop
-					and deliver the project. Nominated as Team of the Year at the end of 2016, and personally nominated for Tech
-					Employee of the Year.
-				</p>
-			</div>
-
-			<div class="cv-job">
-				<div class="cv-job-header">
-					<span class="cv-job-title">Front End Web Developer <span class="cv-job-company">— THG</span></span>
-					<span class="cv-job-dates">2012 – Nov 2016</span>
-				</div>
-				<p>
-					Joined THG as a Front End Developer when the team had 8 developers maintaining 30 websites. As THG more than
-					doubled in size those 30 websites grew to over 100, and I grew with the company.
-				</p>
-			</div>
-
-			<div class="cv-job">
-				<div class="cv-job-header">
-					<span class="cv-job-title">UI Designer / Developer progression <span class="cv-job-company">— Martin Dawes Systems</span></span>
-					<span class="cv-job-dates">Sept 2007 – Nov 2012</span>
-				</div>
-				<p>
-					Progressed through a series of roles: Web Designer (2007–2008), Graduation Scheme (2008–2009), UI Designer
-					(2009–2011), UI Designer / Developer (2011–2012).
-				</p>
+				<a href="mailto:richard.gill1986@gmail.com" class="hero-cta">→ Embrace the Challenge</a>
 			</div>
 		</section>
 
-		<section class="cv-section">
-			<h2>Skills</h2>
-			<ul class="cv-skills">
-				<li>Jira and workflow management</li>
-				<li>Scrum and other agile techniques</li>
-				<li>Good organisational and time management skills</li>
-				<li>Good presentation skills using a variety of media</li>
-				<li>Excellent interpersonal skills</li>
-				<li>Excellent work ethic</li>
-				<li>Excellent attention to detail</li>
-				<li>Working independently or as part of a team</li>
-				<li>Ability to work under pressure and to tight deadlines</li>
-				<li>Willingness to work flexibly</li>
-			</ul>
-		</section>
-
-		<section class="cv-section">
-			<h2>Education</h2>
-
-			<div class="cv-edu">
-				<span class="cv-edu-details">BA (Hons) Digital Arts — Liverpool John Moores University</span>
-				<span class="cv-edu-dates">2006 – 2007</span>
-				<span class="cv-edu-note">via St Helens College</span>
+		<!-- STATS BAR -->
+		<div class="stats-bar">
+			<div class="stats-grid">
+				<div class="stat">
+					<span class="stat-number">16</span>
+					<span class="stat-label">Years in the game</span>
+				</div>
+				<div class="stat">
+					<span class="stat-number">134</span>
+					<span class="stat-label">Websites delivered</span>
+				</div>
+				<div class="stat">
+					<span class="stat-number">64</span>
+					<span class="stat-label">Sites migrated</span>
+				</div>
+				<div class="stat">
+					<span class="stat-number">0</span>
+					<span class="stat-label">Downtime on migration</span>
+				</div>
 			</div>
+		</div>
 
-			<div class="cv-edu">
-				<span class="cv-edu-details"
-					>Foundation Degree in Arts (Multimedia Arts and Animation) — Liverpool John Moores University</span
-				>
-				<span class="cv-edu-dates">2004 – 2006</span>
-				<span class="cv-edu-note">via St Helens College</span>
+		<!-- WHO IS THIS GUY -->
+		<div class="cream">
+			<div class="inner">
+				<div class="who-section">
+					<div class="who-card">
+						<h2>Who Is This Guy?</h2>
+						<div class="who-traits">
+							<div class="who-trait">
+								<h3>The early riser</h3>
+								<p>4:30am gym sessions before most people have hit snooze. Discipline is a lifestyle, not a phase.</p>
+							</div>
+							<div class="who-trait">
+								<h3>The loyal one</h3>
+								<p>16 years at THG. Not because he had to stay. Because he genuinely cared about the work and the people around him.</p>
+							</div>
+							<div class="who-trait">
+								<h3>The calm in the storm</h3>
+								<p>Migrations, deadlines, audits. Richard is the person teams want in the room when things get complicated.</p>
+							</div>
+						</div>
+						<p class="who-card-footer">No relish on this CV. No filler, no padding, no mystery meat. Just the good stuff, delivered hot. ★</p>
+					</div>
+				</div>
 			</div>
-		</section>
+		</div>
 
-		<section class="cv-section cv-interests">
-			<h2>Interests</h2>
-			<p>
-				I am a dedicated family man and love spending time with my wife and two children. We enjoy snowboarding,
-				skateboarding, camping and the beach.
-			</p>
-			<p>
-				I am interested in all aspects of new technology, games platforms and computer software, and am enthusiastic
-				about maintaining a healthy lifestyle through regular gym training. I also have a keen interest in travel and
-				movies.
-			</p>
-		</section>
+		<!-- CAREER -->
+		<div class="cream">
+			<div class="inner">
+				<div class="career-section">
+					<div class="section-header">
+						<span class="section-num">01</span>
+						<h2 class="section-title">The Career So Far</h2>
+					</div>
 
-		<section class="cv-section">
-			<h2>References</h2>
-			<p style="color: #ccc; font-size: 0.9375rem;">Available upon request.</p>
-		</section>
+					<div class="job">
+						<p class="job-date">May 2025 – Now</p>
+						<p class="job-company">Myprotein / THG</p>
+						<span class="job-badge">Current</span>
+						<h3 class="job-title">Head of Engineering</h3>
+						<p class="job-summary">Leading the team behind one of the world's biggest sports nutrition brands.</p>
+						<ul class="job-bullets">
+							<li>Managing 4 developers and 2 UX designers, keeping Myprotein.com sharp, fast and converting.</li>
+							<li>Embedded <strong>AI tooling</strong> into the team's workflow. Same quality, faster delivery.</li>
+							<li>Owns the technical roadmap, cross-functional relationships and team development.</li>
+						</ul>
+					</div>
+
+					<div class="job">
+						<p class="job-date">Jan 2024 – May 2025</p>
+						<p class="job-company">THG</p>
+						<h3 class="job-title">Engineering Manager, Nutrition</h3>
+						<p class="job-summary">Built a fully remote squad from scratch. Delivered a live platform in 3 months.</p>
+						<ul class="job-bullets">
+							<li>Migrated <strong>UK, Germany and Japan</strong> (the top 3 revenue locales) with zero downtime.</li>
+							<li>Shipped all <strong>64 Nutrition sites</strong> onto a new platform in Q1 2025.</li>
+							<li>Collaborated with PwC on a 6-week design sprint for new MP.com templates. On time, every time.</li>
+							<li>Partnered with CRO and UX on Core Web Vitals improvements across the estate.</li>
+						</ul>
+					</div>
+
+					<div class="job">
+						<p class="job-date">May 2021 – Dec 2024</p>
+						<p class="job-company">THG</p>
+						<span class="job-badge">Team of the Year 2021</span>
+						<h3 class="job-title">Engineering Manager</h3>
+						<p class="job-summary">A team of 10. A target of websites. An award at the end of it.</p>
+						<ul class="job-bullets">
+							<li><strong>81 websites delivered in 2021</strong> alone, part of a wider two-squad output of 134.</li>
+							<li>Used Jira data to identify sprint efficiency gaps and coach engineers individually.</li>
+							<li>Recruited and onboarded <strong>6 new team members</strong> fully remotely.</li>
+							<li>Delivered for Cult Beauty, Berghaus, Kickers, Lyle and Scott and Nuxe, among others.</li>
+							<li>Completed Scrum Master certification while running the team full time.</li>
+						</ul>
+					</div>
+
+					<div class="job">
+						<p class="job-date">Mar 2017 – May 2021</p>
+						<p class="job-company">THG</p>
+						<span class="job-badge">Fearless Leadership Award</span>
+						<h3 class="job-title">Tech Lead</h3>
+						<p class="job-summary">Manager, Scrum Master, developer and mentor. Sometimes all in the same afternoon.</p>
+						<ul class="job-bullets">
+							<li>Led up to 11 engineers across four parallel workstreams.</li>
+							<li>Gradually stepped away from hands-on development to focus fully on people leadership.</li>
+							<li>Regular one-to-ones, performance reviews and a genuine investment in every person on the team.</li>
+						</ul>
+					</div>
+
+					<div class="job">
+						<p class="job-date">Oct 2016 – Mar 2017</p>
+						<p class="job-company">THG</p>
+						<h3 class="job-title">International Rollout Lead</h3>
+						<p class="job-summary">50+ websites. 28 languages. One very busy quarter.</p>
+						<ul class="job-bullets">
+							<li>Led THG's push into global markets as part of an aggressive international expansion.</li>
+							<li>Nominated for Tech Employee of the Year. Team nominated for Team of the Year.</li>
+						</ul>
+					</div>
+
+					<div class="job">
+						<p class="job-date">2012 – Oct 2016</p>
+						<p class="job-company">THG</p>
+						<h3 class="job-title">Front End Web Developer</h3>
+						<p class="job-summary">Joined a team of 8 maintaining 30 sites. Left managing an estate of 100+.</p>
+						<ul class="job-bullets">
+							<li>Grew with the company through one of its most ambitious scaling phases.</li>
+						</ul>
+					</div>
+
+					<div class="job">
+						<p class="job-date">Sept 2007 – Nov 2012</p>
+						<p class="job-company">Martin Dawes Systems</p>
+						<h3 class="job-title">UI Designer and Developer</h3>
+						<p class="job-summary">Where it all started. Five years, four job titles, one clear direction of travel.</p>
+						<ul class="job-bullets">
+							<li>Progressed from Web Designer through the graduate scheme to UI Designer and Developer.</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- WHAT HE BRINGS -->
+		<div class="cream" style="border-top: 1px solid #333;">
+			<div class="inner">
+				<div class="skills-section">
+					<div class="section-header">
+						<span class="section-num">02</span>
+						<h2 class="section-title">What He Brings</h2>
+					</div>
+
+					<div class="skills-category">
+						<h3>Technical</h3>
+						<div class="pills">
+							<span class="pill">HTML</span>
+							<span class="pill">JavaScript</span>
+							<span class="pill">SASS</span>
+							<span class="pill">Tailwind CSS</span>
+							<span class="pill">Astro</span>
+							<span class="pill">SQL</span>
+							<span class="pill">Google Tag Manager</span>
+							<span class="pill">Google Analytics</span>
+							<span class="pill">Git</span>
+							<span class="pill">AI tooling</span>
+						</div>
+					</div>
+
+					<div class="skills-category">
+						<h3>Leadership</h3>
+						<div class="pills">
+							<span class="pill">Certified Scrum Master</span>
+							<span class="pill">Agile delivery</span>
+							<span class="pill">Jira and workflow</span>
+							<span class="pill">Team development</span>
+							<span class="pill">360 feedback</span>
+							<span class="pill">Remote team leadership</span>
+							<span class="pill">Stakeholder management</span>
+							<span class="pill">Recruitment</span>
+							<span class="pill">Mentoring</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- WHAT PEOPLE SAY -->
+		<div class="cream" style="border-top: 1px solid #333;">
+			<div class="inner">
+				<div class="testimonials-section">
+					<div class="section-header">
+						<span class="section-num">03</span>
+						<h2 class="section-title">What People Say</h2>
+					</div>
+
+					<div class="testimonial-cards">
+						<div class="testimonial-card">
+							<div class="testimonial-quote-mark">"</div>
+							<p class="testimonial-text">Testimonial from a senior leader or director at THG — about Richard's ability to deliver at pace, lead through change or build a high-performing culture.</p>
+							<p class="testimonial-name">Name · Title · Company</p>
+						</div>
+						<div class="testimonial-card">
+							<div class="testimonial-quote-mark">"</div>
+							<p class="testimonial-text">Testimonial from a direct report — what it was like being managed by Richard and what they learned. The best ones talk about feeling supported, trusted and developed.</p>
+							<p class="testimonial-name">Name · Title · Company</p>
+						</div>
+						<div class="testimonial-card">
+							<div class="testimonial-quote-mark">"</div>
+							<p class="testimonial-text">Testimonial from a peer or cross-functional collaborator — how they'd describe working with Richard when the pressure was on.</p>
+							<p class="testimonial-name">Name · Title · Company</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- CREDENTIALS -->
+		<div class="cream" style="border-top: 1px solid #333;">
+			<div class="inner">
+				<div class="credentials-section">
+					<div class="section-header">
+						<span class="section-num">04</span>
+						<h2 class="section-title">Credentials</h2>
+					</div>
+
+					<div class="credential">
+						<p class="credential-year">2024</p>
+						<p class="credential-title">Certified Scrum Master</p>
+						<p class="credential-institution">Self-directed</p>
+					</div>
+
+					<div class="credential">
+						<p class="credential-year">2006 – 2007</p>
+						<p class="credential-title">BA (Hons) Digital Arts</p>
+						<p class="credential-institution">Liverpool John Moores University</p>
+					</div>
+
+					<div class="credential">
+						<p class="credential-year">2004 – 2006</p>
+						<p class="credential-title">Foundation Degree, Multimedia Arts and Animation</p>
+						<p class="credential-institution">Liverpool John Moores University</p>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- FOOTER BAND -->
+		<div class="cv-footer-band">
+			<span class="cv-footer-cta">Embrace the Challenge</span>
+			<span class="cv-footer-ref">References available on request · richardgill.net</span>
+		</div>
+
 	</div>
-
-	<div class="text-center mt-8 no-print">
-		<a href="/" class="inline-block text-red-400 no-underline text-sm hover:underline">← Back to Hot Dog World Tour</a>
-	</div>
-
-	<script define:vars={{ images: imagesJson }}>
-		const imagesData = JSON.parse(images);
-		const pick = imagesData[Math.floor(Math.random() * imagesData.length)];
-		const banner = document.getElementById('hotdog-banner');
-		banner.src = '/images/' + pick.file;
-		banner.alt = pick.title;
-		banner.width = pick.width;
-		banner.height = pick.height;
-	</script>
 </BaseLayout>
