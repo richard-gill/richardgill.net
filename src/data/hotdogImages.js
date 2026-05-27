@@ -172,7 +172,7 @@ export const hotdogImages = [
 		title: 'Porth Aigo',
 		description: 'A coastal hot dog on the Welsh shoreline.',
 		width: 5184, height: 3904,
-		lat: 53.3050, lng: -4.6300
+		lat: 52.8510, lng: -4.7236
 	},
 	{
 		file: 'ramp1.webp',
@@ -242,7 +242,7 @@ export const hotdogImages = [
 		title: 'Porth Aigo II',
 		description: 'Back on the Welsh coast — some spots are worth a second visit.',
 		width: 2592, height: 1952,
-		lat: 53.3050, lng: -4.6300
+		lat: 52.8510, lng: -4.7236
 	},
 	{
 		file: 'wherenext.webp',
