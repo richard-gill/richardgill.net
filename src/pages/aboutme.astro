@@ -3,799 +3,284 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
 <BaseLayout title="Richard Gill — About Me" description="About Richard Gill — Engineering Manager with 16 years of commercial experience in web development and team leadership.">
-	<style>
-		/* Break out of BaseLayout's p-8 padding */
-		.cv-page {
-			margin: -2rem -2rem 0;
-		}
 
-		/* ── SHARED ── */
-		.inner {
-			max-width: 52rem;
-			margin: 0 auto;
-			padding: 0 2rem;
-		}
-
-		/* ── HERO ── */
-		.hero {
-			background: #0d0d0d;
-			padding: 3.5rem 0 0;
-			position: relative;
-			overflow: hidden;
-		}
-
-		.hero-inner {
-			max-width: 52rem;
-			margin: 0 auto;
-			padding: 0 2rem 3.5rem;
-			position: relative;
-		}
-
-		.hero-monogram {
-			position: absolute;
-			top: -1rem;
-			right: 1.5rem;
-			font-size: 14rem;
-			font-weight: 900;
-			color: #1a1a1a;
-			line-height: 1;
-			letter-spacing: -0.05em;
-			pointer-events: none;
-			user-select: none;
-		}
-
-		.hero-subtitle {
-			font-size: 0.7rem;
-			font-weight: 700;
-			text-transform: uppercase;
-			letter-spacing: 0.18em;
-			color: #ff4444;
-			margin-bottom: 1rem;
-		}
-
-		.hero-name {
-			font-size: clamp(3.5rem, 10vw, 6rem);
-			font-weight: 900;
-			text-transform: uppercase;
-			line-height: 0.9;
-			letter-spacing: -0.02em;
-			margin-bottom: 2rem;
-		}
-
-		.hero-name-first {
-			color: #fff;
-			display: block;
-		}
-
-		.hero-name-last {
-			color: #ff4444;
-			display: block;
-		}
-
-		.hero-contact {
-			display: flex;
-			flex-direction: column;
-			gap: 0.3rem;
-			margin-bottom: 2.5rem;
-			font-size: 0.875rem;
-			color: #888;
-		}
-
-		.hero-contact a {
-			color: #888;
-			text-decoration: none;
-		}
-
-		.hero-contact a:hover {
-			color: #ff4444;
-		}
-
-		.hero-tagline {
-			font-style: italic;
-			font-size: 1.25rem;
-			line-height: 1.5;
-			color: #ccc;
-			margin-bottom: 2rem;
-			max-width: 28rem;
-		}
-
-		.hero-tagline strong {
-			font-style: normal;
-			color: #fff;
-		}
-
-		.hero-cta {
-			display: inline-flex;
-			align-items: center;
-			gap: 0.75rem;
-			background: #ff4444;
-			color: #fff;
-			text-decoration: none;
-			font-size: 0.75rem;
-			font-weight: 700;
-			text-transform: uppercase;
-			letter-spacing: 0.15em;
-			padding: 1rem 2rem;
-		}
-
-		.hero-cta:hover {
-			background: #cc2222;
-		}
-
-		/* ── STATS BAR ── */
-		.stats-bar {
-			background: #c41d1d;
-			padding: 2rem 0;
-		}
-
-		.stats-grid {
-			display: grid;
-			grid-template-columns: repeat(4, 1fr);
-			gap: 0;
-			max-width: 52rem;
-			margin: 0 auto;
-			padding: 0 2rem;
-		}
-
-		.stat {
-			text-align: center;
-			position: relative;
-		}
-
-		.stat + .stat::before {
-			content: '';
-			position: absolute;
-			left: 0;
-			top: 10%;
-			height: 80%;
-			width: 1px;
-			background: rgba(255,255,255,0.25);
-		}
-
-		.stat-number {
-			font-size: 2.5rem;
-			font-weight: 900;
-			color: #fff;
-			line-height: 1;
-			display: block;
-		}
-
-		.stat-label {
-			font-size: 0.6rem;
-			font-weight: 700;
-			text-transform: uppercase;
-			letter-spacing: 0.12em;
-			color: rgba(255,255,255,0.7);
-			display: block;
-			margin-top: 0.4rem;
-		}
-
-		/* ── DARK CONTENT SECTIONS ── */
-		.cream {
-			background: #1a1a1a;
-			color: #fff;
-		}
-
-		/* ── WHO IS THIS GUY ── */
-		.who-section {
-			padding: 4rem 0;
-		}
-
-		.who-card {
-			background: #111;
-			color: #fff;
-			padding: 3rem;
-			border-radius: 4px;
-			max-width: 44rem;
-			margin: 0 auto;
-			position: relative;
-		}
-
-		.who-card h2 {
-			font-size: 1.6rem;
-			font-weight: 900;
-			text-transform: uppercase;
-			letter-spacing: 0.05em;
-			margin-bottom: 2rem;
-			padding-bottom: 1rem;
-			border-bottom: 1px solid #333;
-		}
-
-		.who-traits {
-			display: flex;
-			flex-direction: column;
-			gap: 1.5rem;
-		}
-
-		.who-trait {
-			border-left: 3px solid #ff4444;
-			padding-left: 1rem;
-		}
-
-		.who-trait h3 {
-			font-size: 1rem;
-			font-weight: 700;
-			color: #fff;
-			margin-bottom: 0.3rem;
-		}
-
-		.who-trait p {
-			font-size: 0.9rem;
-			color: #aaa;
-			line-height: 1.6;
-		}
-
-		.who-card-footer {
-			margin-top: 2rem;
-			padding-top: 1.5rem;
-			border-top: 1px solid #222;
-			font-style: italic;
-			font-size: 0.9rem;
-			color: #666;
-			text-align: center;
-		}
-
-		/* ── SECTION HEADER ── */
-		.section-header {
-			display: flex;
-			align-items: baseline;
-			gap: 1rem;
-			margin-bottom: 2.5rem;
-			padding-bottom: 1rem;
-			border-bottom: 1px solid #444;
-		}
-
-		.section-num {
-			font-size: 0.75rem;
-			font-weight: 700;
-			color: #ff4444;
-		}
-
-		.section-title {
-			font-size: 1.6rem;
-			font-weight: 900;
-			text-transform: uppercase;
-			letter-spacing: 0.08em;
-			color: #fff;
-			flex: 1;
-		}
-
-		.section-line {
-			flex: 1;
-			height: 1px;
-			background: #444;
-			align-self: center;
-		}
-
-		/* ── CAREER ── */
-		.career-section {
-			padding: 4rem 0;
-		}
-
-		.job {
-			padding-bottom: 2.5rem;
-			margin-bottom: 2.5rem;
-			border-bottom: 1px solid #333;
-		}
-
-		.job:last-child {
-			border-bottom: none;
-			margin-bottom: 0;
-			padding-bottom: 0;
-		}
-
-		.job-date {
-			font-size: 0.75rem;
-			font-weight: 700;
-			text-transform: uppercase;
-			letter-spacing: 0.12em;
-			color: #ff4444;
-			margin-bottom: 0.3rem;
-		}
-
-		.job-company {
-			font-size: 0.75rem;
-			font-weight: 700;
-			text-transform: uppercase;
-			letter-spacing: 0.1em;
-			color: #888;
-			margin-bottom: 0.5rem;
-		}
-
-		.job-badge {
-			display: inline-block;
-			background: #ff4444;
-			color: #fff;
-			font-size: 0.6rem;
-			font-weight: 700;
-			text-transform: uppercase;
-			letter-spacing: 0.12em;
-			padding: 0.2rem 0.6rem;
-			margin-bottom: 0.5rem;
-		}
-
-		.job-title {
-			font-size: 1.5rem;
-			font-weight: 700;
-			color: #fff;
-			margin-bottom: 0.3rem;
-			line-height: 1.2;
-		}
-
-		.job-summary {
-			font-style: italic;
-			font-size: 0.9rem;
-			color: #888;
-			margin-bottom: 1rem;
-		}
-
-		.job-bullets {
-			list-style: none;
-			padding: 0;
-			margin: 0;
-			display: flex;
-			flex-direction: column;
-			gap: 0.5rem;
-		}
-
-		.job-bullets li {
-			display: flex;
-			gap: 0.75rem;
-			font-size: 0.9rem;
-			color: #ccc;
-			line-height: 1.5;
-		}
-
-		.job-bullets li::before {
-			content: '—';
-			color: #ff4444;
-			flex-shrink: 0;
-			font-weight: 700;
-		}
-
-		.job-bullets strong {
-			font-weight: 700;
-		}
-
-		/* ── SKILLS ── */
-		.skills-section {
-			padding: 4rem 0;
-		}
-
-		.skills-category {
-			margin-bottom: 2rem;
-		}
-
-		.skills-category h3 {
-			font-size: 0.75rem;
-			font-weight: 700;
-			text-transform: uppercase;
-			letter-spacing: 0.15em;
-			color: #fff;
-			margin-bottom: 0.75rem;
-			padding-bottom: 0.5rem;
-			border-bottom: 2px solid #ff4444;
-			display: inline-block;
-		}
-
-		.pills {
-			display: flex;
-			flex-wrap: wrap;
-			gap: 0.5rem;
-			margin-top: 0.75rem;
-		}
-
-		.pill {
-			border: 1.5px solid #444;
-			border-radius: 999px;
-			padding: 0.35rem 0.9rem;
-			font-size: 0.85rem;
-			color: #ccc;
-		}
-
-		/* ── TESTIMONIALS ── */
-		.testimonials-section {
-			padding: 4rem 0;
-		}
-
-		.testimonial-cards {
-			display: flex;
-			flex-direction: column;
-			gap: 1rem;
-		}
-
-		.testimonial-card {
-			background: #252525;
-			padding: 2rem;
-			border-radius: 4px;
-		}
-
-		.testimonial-quote-mark {
-			font-size: 2rem;
-			font-weight: 900;
-			color: #ff4444;
-			line-height: 1;
-			margin-bottom: 0.5rem;
-		}
-
-		.testimonial-text {
-			font-style: italic;
-			font-size: 0.9rem;
-			color: #aaa;
-			line-height: 1.7;
-			margin-bottom: 1rem;
-		}
-
-		.testimonial-name {
-			font-size: 0.7rem;
-			font-weight: 700;
-			text-transform: uppercase;
-			letter-spacing: 0.12em;
-			color: #666;
-		}
-
-		/* ── CREDENTIALS ── */
-		.credentials-section {
-			padding: 4rem 0;
-		}
-
-		.credential {
-			padding-bottom: 1.5rem;
-			margin-bottom: 1.5rem;
-			border-bottom: 1px solid #333;
-		}
-
-		.credential:last-child {
-			border-bottom: none;
-		}
-
-		.credential-year {
-			font-size: 0.75rem;
-			font-weight: 700;
-			text-transform: uppercase;
-			letter-spacing: 0.12em;
-			color: #ff4444;
-			margin-bottom: 0.3rem;
-		}
-
-		.credential-title {
-			font-size: 1.1rem;
-			font-weight: 700;
-			color: #fff;
-			margin-bottom: 0.2rem;
-		}
-
-		.credential-institution {
-			font-size: 0.875rem;
-			color: #888;
-		}
-
-		/* ── FOOTER BAND ── */
-		.cv-footer-band {
-			background: #0d0d0d;
-			padding: 2rem;
-			display: flex;
-			justify-content: space-between;
-			align-items: center;
-			flex-wrap: wrap;
-			gap: 1rem;
-			margin-top: 0;
-		}
-
-		.cv-footer-cta {
-			font-size: 0.7rem;
-			font-weight: 700;
-			text-transform: uppercase;
-			letter-spacing: 0.18em;
-			color: #ff4444;
-		}
-
-		.cv-footer-ref {
-			font-size: 0.8rem;
-			color: #555;
-		}
-
-		/* ── RESPONSIVE ── */
-		@media (max-width: 600px) {
-			.stats-grid {
-				grid-template-columns: repeat(2, 1fr);
-				gap: 1.5rem;
-			}
-
-			.stat + .stat::before {
-				display: none;
-			}
-
-			.who-card {
-				padding: 2rem 1.5rem;
-			}
-
-			.hero-monogram {
-				font-size: 8rem;
-				opacity: 0.5;
-			}
-		}
-	</style>
-
-	<div class="cv-page">
+	<div class="-mt-8 -mx-8">
 
 		<!-- HERO -->
-		<section class="hero">
-			<div class="hero-inner">
-				<div class="hero-monogram" aria-hidden="true">RG</div>
-				<p class="hero-subtitle">Engineering Leader · E-Commerce · Builder of Great Teams</p>
-				<h1 class="hero-name">
-					<span class="hero-name-first">Richard</span>
-					<span class="hero-name-last">Gill</span>
+		<section class="bg-dark-hero pt-14 relative overflow-hidden">
+			<div class="max-w-[52rem] mx-auto px-8 pb-14 relative">
+				<div class="absolute -top-4 right-6 text-[8rem] sm:text-[14rem] font-black text-dark-section leading-none tracking-[-0.05em] pointer-events-none select-none" aria-hidden="true">RG</div>
+
+				<p class="text-[0.7rem] font-bold uppercase tracking-[0.18em] text-accent mb-4">Engineering Leader · E-Commerce · Builder of Great Teams</p>
+
+				<h1 class="text-[clamp(3.5rem,10vw,6rem)] font-black uppercase leading-[0.9] tracking-[-0.02em] mb-8">
+					<span class="text-white block">Richard</span>
+					<span class="text-accent block">Gill</span>
 				</h1>
-				<div class="hero-contact">
+
+				<div class="flex flex-col gap-[0.3rem] mb-10 text-sm text-[#888]">
 					<span>07519 878764</span>
-					<a href="mailto:richard.gill1986@gmail.com">richard.gill1986@gmail.com</a>
-					<a href="https://www.linkedin.com/in/richard-gill-56bb5347/" target="_blank" rel="noopener">LinkedIn</a>
-					<a href="https://open.spotify.com/playlist/5mRht3M1cXxPNn3EGQjlcn?si=2KP5ZGMMQg610pw-S0hpyg" target="_blank" rel="noopener">Spotify</a>
-					<a href="https://www.richardgill.net">richardgill.net</a>
+					<a href="mailto:richard.gill1986@gmail.com" class="text-[#888] no-underline hover:text-accent transition-colors">richard.gill1986@gmail.com</a>
+					<a href="https://www.linkedin.com/in/richard-gill-56bb5347/" target="_blank" rel="noopener" class="text-[#888] no-underline hover:text-accent transition-colors">LinkedIn</a>
+					<span>richardgill.net</span>
+					<a href="https://open.spotify.com/playlist/5mRht3M1cXxPNn3EGQjlcn?si=2KP5ZGMMQg610pw-S0hpyg" target="_blank" rel="noopener" class="text-[#888] no-underline hover:text-accent transition-colors">Spotify</a>
 				</div>
-				<p class="hero-tagline">
-					16 years. One company. <strong>Endless challenges embraced.</strong><br />
+
+				<p class="italic text-xl leading-relaxed text-[#ccc] mb-8 max-w-[28rem]">
+					16 years. One company. <strong class="not-italic text-white">Endless challenges embraced.</strong><br />
 					Now ready to bring that same energy somewhere new.
 				</p>
-				<a href="mailto:richard.gill1986@gmail.com" class="hero-cta">→ Embrace the Challenge</a>
+
+				<a href="mailto:richard.gill1986@gmail.com" class="inline-flex items-center gap-3 bg-accent text-white no-underline text-xs font-bold uppercase tracking-[0.15em] px-8 py-4 hover:bg-accent-hover transition-colors">→ Embrace the Challenge</a>
 			</div>
 		</section>
 
 		<!-- STATS BAR -->
-		<div class="stats-bar">
-			<div class="stats-grid">
-				<div class="stat">
-					<span class="stat-number">16</span>
-					<span class="stat-label">Years in the game</span>
+		<div class="bg-stats-red py-8">
+			<div class="grid grid-cols-2 sm:grid-cols-4 sm:divide-x sm:divide-white/25 max-w-[52rem] mx-auto px-8 gap-y-6 sm:gap-y-0">
+				<div class="text-center">
+					<span class="text-[2.5rem] font-black text-white leading-none block">16</span>
+					<span class="text-[0.6rem] font-bold uppercase tracking-[0.12em] text-white/70 block mt-[0.4rem]">Years in the game</span>
 				</div>
-				<div class="stat">
-					<span class="stat-number">134</span>
-					<span class="stat-label">Websites delivered</span>
+				<div class="text-center">
+					<span class="text-[2.5rem] font-black text-white leading-none block">756</span>
+					<span class="text-[0.6rem] font-bold uppercase tracking-[0.12em] text-white/70 block mt-[0.4rem]">Websites delivered</span>
 				</div>
-				<div class="stat">
-					<span class="stat-number">64</span>
-					<span class="stat-label">Sites migrated</span>
+				<div class="text-center">
+					<span class="text-[2.5rem] font-black text-white leading-none block">64</span>
+					<span class="text-[0.6rem] font-bold uppercase tracking-[0.12em] text-white/70 block mt-[0.4rem]">Sites migrated</span>
 				</div>
-				<div class="stat">
-					<span class="stat-number">0</span>
-					<span class="stat-label">Downtime on migration</span>
+				<div class="text-center">
+					<span class="text-[2.5rem] font-black text-white leading-none block">0</span>
+					<span class="text-[0.6rem] font-bold uppercase tracking-[0.12em] text-white/70 block mt-[0.4rem]">Downtime on migration</span>
 				</div>
 			</div>
 		</div>
 
 		<!-- WHO IS THIS GUY -->
-		<div class="cream">
-			<div class="inner">
-				<div class="who-section">
-					<div class="who-card">
-						<h2>Who Is This Guy?</h2>
-						<div class="who-traits">
-							<div class="who-trait">
-								<h3>The early riser</h3>
-								<p>4:30am gym sessions before most people have hit snooze. Discipline is a lifestyle, not a phase.</p>
-							</div>
-							<div class="who-trait">
-								<h3>The loyal one</h3>
-								<p>16 years at THG. Not because he had to stay. Because he genuinely cared about the work and the people around him.</p>
-							</div>
-							<div class="who-trait">
-								<h3>The calm in the storm</h3>
-								<p>Migrations, deadlines, audits. Richard is the person teams want in the room when things get complicated.</p>
-							</div>
+		<div class="bg-dark-section">
+			<div class="max-w-[52rem] mx-auto px-8 py-16">
+				<div class="bg-dark-card text-white p-8 sm:p-12 rounded max-w-[44rem] mx-auto">
+					<h2 class="text-[1.6rem] font-black uppercase tracking-[0.05em] mb-8 pb-4 border-b border-[#333]">Who Is This Guy?</h2>
+					<div class="flex flex-col gap-6">
+						<div class="border-l-[3px] border-accent pl-4">
+							<h3 class="text-base font-bold text-white mb-1">The early riser</h3>
+							<p class="text-[0.9rem] text-[#aaa] leading-[1.6]">4:30am gym sessions before most people have hit snooze. Discipline is a lifestyle, not a phase.</p>
 						</div>
-						<p class="who-card-footer">No relish on this CV. No filler, no padding, no mystery meat. Just the good stuff, delivered hot. ★</p>
+						<div class="border-l-[3px] border-accent pl-4">
+							<h3 class="text-base font-bold text-white mb-1">The loyal one</h3>
+							<p class="text-[0.9rem] text-[#aaa] leading-[1.6]">16 years at THG. Not because he had to stay. Because he genuinely cared about the work and the people around him.</p>
+						</div>
+						<div class="border-l-[3px] border-accent pl-4">
+							<h3 class="text-base font-bold text-white mb-1">The calm in the storm</h3>
+							<p class="text-[0.9rem] text-[#aaa] leading-[1.6]">Migrations, deadlines, audits. Richard is the person teams want in the room when things get complicated.</p>
+						</div>
 					</div>
+					<p class="mt-8 pt-6 border-t border-[#222] italic text-[0.9rem] text-[#666] text-center">No relish on this CV. No filler, no padding, no mystery meat. Just the good stuff, delivered hot. ★</p>
 				</div>
 			</div>
 		</div>
 
 		<!-- CAREER -->
-		<div class="cream">
-			<div class="inner">
-				<div class="career-section">
-					<div class="section-header">
-						<span class="section-num">01</span>
-						<h2 class="section-title">The Career So Far</h2>
-					</div>
+		<div class="bg-dark-section border-t border-[#333]">
+			<div class="max-w-[52rem] mx-auto px-8 py-16">
+				<div class="flex items-baseline gap-4 mb-10 pb-4 border-b border-[#444]">
+					<span class="text-xs font-bold text-accent">01</span>
+					<h2 class="text-[1.6rem] font-black uppercase tracking-[0.08em] text-white flex-1">The Career So Far</h2>
+				</div>
 
-					<div class="job">
-						<p class="job-date">May 2025 – Now</p>
-						<p class="job-company">Myprotein / THG</p>
-						<span class="job-badge">Current</span>
-						<h3 class="job-title">Head of Engineering</h3>
-						<p class="job-summary">Leading the team behind one of the world's biggest sports nutrition brands.</p>
-						<ul class="job-bullets">
-							<li>Managing 4 developers and 2 UX designers, keeping Myprotein.com sharp, fast and converting.</li>
-							<li>Embedded AI tooling into the team's workflow. Same quality, faster delivery.</li>
-							<li>Making decisions led by data. 50+ experiments acorss 36 locales.</li>
-							<li>A team that's driving £20m in projected annual revenue.</li>
-						</ul>
-					</div>
+				<div class="pb-10 mb-10 border-b border-[#333]">
+					<p class="text-xs font-bold uppercase tracking-[0.12em] text-accent mb-1">May 2025 – Now</p>
+					<p class="text-xs font-bold uppercase tracking-[0.1em] text-[#888] mb-2">Myprotein / THG</p>
+					<span class="inline-block bg-accent text-white text-[0.6rem] font-bold uppercase tracking-[0.12em] px-[0.6rem] py-[0.2rem] mb-2">Current</span>
+					<h3 class="text-2xl font-bold text-white mb-1 leading-tight">Head of Engineering</h3>
+					<p class="italic text-[0.9rem] text-[#888] mb-4">Leading the team behind one of the world's biggest sports nutrition brands.</p>
+					<ul class="list-none p-0 m-0 flex flex-col gap-2">
+						<li class="flex gap-3 text-[0.9rem] text-[#ccc] leading-normal"><span class="text-accent shrink-0 font-bold">—</span>Managing 4 developers and 2 UX designers, keeping Myprotein.com sharp, fast and converting.</li>
+						<li class="flex gap-3 text-[0.9rem] text-[#ccc] leading-normal"><span class="text-accent shrink-0 font-bold">—</span>Embedded <strong>AI tooling</strong> into the team's workflow. Same quality, faster delivery.</li>
+						<li class="flex gap-3 text-[0.9rem] text-[#ccc] leading-normal"><span class="text-accent shrink-0 font-bold">—</span>Owns the technical roadmap, cross-functional relationships and team development.</li>
+					</ul>
+				</div>
 
-					<div class="job">
-						<p class="job-date">Jan 2024 – May 2025</p>
-						<p class="job-company">THG</p>
-						<h3 class="job-title">Engineering Manager, Nutrition</h3>
-						<p class="job-summary">Built a fully remote squad from scratch. Delivered a live platform in 3 months.</p>
-						<ul class="job-bullets">
-							<li>Migrated <strong>UK, Germany and Japan</strong> (the top 3 revenue locales) with zero downtime.</li>
-							<li>Shipped all <strong>64 Nutrition sites</strong> onto a new platform in Q1 2025.</li>
-							<li>Collaborated with PwC on a 6-week design sprint for new MP.com templates. On time, every time.</li>
-							<li>Partnered with CRO and UX on Core Web Vitals improvements across the estate.</li>
-						</ul>
-					</div>
+				<div class="pb-10 mb-10 border-b border-[#333]">
+					<p class="text-xs font-bold uppercase tracking-[0.12em] text-accent mb-1">Jan 2024 – May 2025</p>
+					<p class="text-xs font-bold uppercase tracking-[0.1em] text-[#888] mb-2">THG</p>
+					<h3 class="text-2xl font-bold text-white mb-1 leading-tight">Engineering Manager, Nutrition</h3>
+					<p class="italic text-[0.9rem] text-[#888] mb-4">Built a fully remote squad from scratch. Delivered a live platform in 3 months.</p>
+					<ul class="list-none p-0 m-0 flex flex-col gap-2">
+						<li class="flex gap-3 text-[0.9rem] text-[#ccc] leading-normal"><span class="text-accent shrink-0 font-bold">—</span>Migrated <strong>UK, Germany and Japan</strong> (the top 3 revenue locales) with zero downtime.</li>
+						<li class="flex gap-3 text-[0.9rem] text-[#ccc] leading-normal"><span class="text-accent shrink-0 font-bold">—</span>Shipped all <strong>64 Nutrition sites</strong> onto a new platform in Q1 2025.</li>
+						<li class="flex gap-3 text-[0.9rem] text-[#ccc] leading-normal"><span class="text-accent shrink-0 font-bold">—</span>Collaborated with PwC on a 6-week design sprint for new MP.com templates. On time, every time.</li>
+						<li class="flex gap-3 text-[0.9rem] text-[#ccc] leading-normal"><span class="text-accent shrink-0 font-bold">—</span>Partnered with CRO and UX on Core Web Vitals improvements across the estate.</li>
+					</ul>
+				</div>
 
-					<div class="job">
-						<p class="job-date">May 2021 – Dec 2024</p>
-						<p class="job-company">THG</p>
-						<span class="job-badge">Team of the Year 2021</span>
-						<h3 class="job-title">Engineering Manager</h3>
-						<p class="job-summary">A team of 10. A target of websites. An award at the end of it.</p>
-						<ul class="job-bullets">
-							<li><strong>81 websites delivered in 2021</strong> alone, part of a wider two-squad output of 134.</li>
-							<li>Used Jira data to identify sprint efficiency gaps and coach engineers individually.</li>
-							<li>Recruited and onboarded <strong>6 new team members</strong> fully remotely.</li>
-							<li>Delivered for Cult Beauty, Berghaus, Kickers, Lyle and Scott and Nuxe, among others.</li>
-							<li>Completed Scrum Master certification while running the team full time.</li>
-						</ul>
-					</div>
+				<div class="pb-10 mb-10 border-b border-[#333]">
+					<p class="text-xs font-bold uppercase tracking-[0.12em] text-accent mb-1">May 2021 – Dec 2024</p>
+					<p class="text-xs font-bold uppercase tracking-[0.1em] text-[#888] mb-2">THG</p>
+					<span class="inline-block bg-accent text-white text-[0.6rem] font-bold uppercase tracking-[0.12em] px-[0.6rem] py-[0.2rem] mb-2">Team of the Year 2021</span>
+					<h3 class="text-2xl font-bold text-white mb-1 leading-tight">Engineering Manager</h3>
+					<p class="italic text-[0.9rem] text-[#888] mb-4">A team of 10. A target of websites. An award at the end of it.</p>
+					<ul class="list-none p-0 m-0 flex flex-col gap-2">
+						<li class="flex gap-3 text-[0.9rem] text-[#ccc] leading-normal"><span class="text-accent shrink-0 font-bold">—</span><strong>81 websites delivered in 2021</strong> alone, part of a wider two-squad output of 134.</li>
+						<li class="flex gap-3 text-[0.9rem] text-[#ccc] leading-normal"><span class="text-accent shrink-0 font-bold">—</span>Used Jira data to identify sprint efficiency gaps and coach engineers individually.</li>
+						<li class="flex gap-3 text-[0.9rem] text-[#ccc] leading-normal"><span class="text-accent shrink-0 font-bold">—</span>Recruited and onboarded <strong>6 new team members</strong> fully remotely.</li>
+						<li class="flex gap-3 text-[0.9rem] text-[#ccc] leading-normal"><span class="text-accent shrink-0 font-bold">—</span>Delivered for Cult Beauty, Berghaus, Kickers, Lyle and Scott and Nuxe, among others.</li>
+						<li class="flex gap-3 text-[0.9rem] text-[#ccc] leading-normal"><span class="text-accent shrink-0 font-bold">—</span>Completed Scrum Master certification while running the team full time.</li>
+					</ul>
+				</div>
 
-					<div class="job">
-						<p class="job-date">Mar 2017 – May 2021</p>
-						<p class="job-company">THG</p>
-						<span class="job-badge">Fearless Leadership Award</span>
-						<h3 class="job-title">Tech Lead</h3>
-						<p class="job-summary">Manager, Scrum Master, developer and mentor. Sometimes all in the same afternoon.</p>
-						<ul class="job-bullets">
-							<li>Led up to 11 engineers across four parallel workstreams.</li>
-							<li>Gradually stepped away from hands-on development to focus fully on people leadership.</li>
-							<li>Regular one-to-ones, performance reviews and a genuine investment in every person on the team.</li>
-						</ul>
-					</div>
+				<div class="pb-10 mb-10 border-b border-[#333]">
+					<p class="text-xs font-bold uppercase tracking-[0.12em] text-accent mb-1">Mar 2017 – May 2021</p>
+					<p class="text-xs font-bold uppercase tracking-[0.1em] text-[#888] mb-2">THG</p>
+					<span class="inline-block bg-accent text-white text-[0.6rem] font-bold uppercase tracking-[0.12em] px-[0.6rem] py-[0.2rem] mb-2">Fearless Leadership Award</span>
+					<h3 class="text-2xl font-bold text-white mb-1 leading-tight">Tech Lead</h3>
+					<p class="italic text-[0.9rem] text-[#888] mb-4">Manager, Scrum Master, developer and mentor. Sometimes all in the same afternoon.</p>
+					<ul class="list-none p-0 m-0 flex flex-col gap-2">
+						<li class="flex gap-3 text-[0.9rem] text-[#ccc] leading-normal"><span class="text-accent shrink-0 font-bold">—</span>Led up to 11 engineers across four parallel workstreams.</li>
+						<li class="flex gap-3 text-[0.9rem] text-[#ccc] leading-normal"><span class="text-accent shrink-0 font-bold">—</span>Gradually stepped away from hands-on development to focus fully on people leadership.</li>
+						<li class="flex gap-3 text-[0.9rem] text-[#ccc] leading-normal"><span class="text-accent shrink-0 font-bold">—</span>Regular one-to-ones, performance reviews and a genuine investment in every person on the team.</li>
+					</ul>
+				</div>
 
-					<div class="job">
-						<p class="job-date">Oct 2016 – Mar 2017</p>
-						<p class="job-company">THG</p>
-						<h3 class="job-title">International Rollout Lead</h3>
-						<p class="job-summary">50+ websites. 28 languages. One very busy quarter.</p>
-						<ul class="job-bullets">
-							<li>Led THG's push into global markets as part of an aggressive international expansion.</li>
-							<li>Nominated for Tech Employee of the Year. Team nominated for Team of the Year.</li>
-						</ul>
-					</div>
+				<div class="pb-10 mb-10 border-b border-[#333]">
+					<p class="text-xs font-bold uppercase tracking-[0.12em] text-accent mb-1">Oct 2016 – Mar 2017</p>
+					<p class="text-xs font-bold uppercase tracking-[0.1em] text-[#888] mb-2">THG</p>
+					<h3 class="text-2xl font-bold text-white mb-1 leading-tight">International Rollout Lead</h3>
+					<p class="italic text-[0.9rem] text-[#888] mb-4">50+ websites. 28 languages. One very busy quarter.</p>
+					<ul class="list-none p-0 m-0 flex flex-col gap-2">
+						<li class="flex gap-3 text-[0.9rem] text-[#ccc] leading-normal"><span class="text-accent shrink-0 font-bold">—</span>Led THG's push into global markets as part of an aggressive international expansion.</li>
+						<li class="flex gap-3 text-[0.9rem] text-[#ccc] leading-normal"><span class="text-accent shrink-0 font-bold">—</span>Nominated for Tech Employee of the Year. Team nominated for Team of the Year.</li>
+					</ul>
+				</div>
 
-					<div class="job">
-						<p class="job-date">2012 – Oct 2016</p>
-						<p class="job-company">THG</p>
-						<h3 class="job-title">Front End Web Developer</h3>
-						<p class="job-summary">Joined a team of 8 maintaining 30 sites. Left managing an estate of 100+.</p>
-						<ul class="job-bullets">
-							<li>Grew with the company through one of its most ambitious scaling phases.</li>
-						</ul>
-					</div>
+				<div class="pb-10 mb-10 border-b border-[#333]">
+					<p class="text-xs font-bold uppercase tracking-[0.12em] text-accent mb-1">2012 – Oct 2016</p>
+					<p class="text-xs font-bold uppercase tracking-[0.1em] text-[#888] mb-2">THG</p>
+					<h3 class="text-2xl font-bold text-white mb-1 leading-tight">Front End Web Developer</h3>
+					<p class="italic text-[0.9rem] text-[#888] mb-4">Joined a team of 8 maintaining 30 sites. Left managing an estate of 100+.</p>
+					<ul class="list-none p-0 m-0 flex flex-col gap-2">
+						<li class="flex gap-3 text-[0.9rem] text-[#ccc] leading-normal"><span class="text-accent shrink-0 font-bold">—</span>Grew with the company through one of its most ambitious scaling phases.</li>
+					</ul>
+				</div>
 
-					<div class="job">
-						<p class="job-date">Sept 2007 – Nov 2012</p>
-						<p class="job-company">Martin Dawes Systems</p>
-						<h3 class="job-title">UI Designer and Developer</h3>
-						<p class="job-summary">Where it all started. Five years, four job titles, one clear direction of travel.</p>
-						<ul class="job-bullets">
-							<li>Progressed from Web Designer through the graduate scheme to UI Designer and Developer.</li>
-						</ul>
-					</div>
+				<div>
+					<p class="text-xs font-bold uppercase tracking-[0.12em] text-accent mb-1">Sept 2007 – Nov 2012</p>
+					<p class="text-xs font-bold uppercase tracking-[0.1em] text-[#888] mb-2">Martin Dawes Systems</p>
+					<h3 class="text-2xl font-bold text-white mb-1 leading-tight">UI Designer and Developer</h3>
+					<p class="italic text-[0.9rem] text-[#888] mb-4">Where it all started. Five years, four job titles, one clear direction of travel.</p>
+					<ul class="list-none p-0 m-0 flex flex-col gap-2">
+						<li class="flex gap-3 text-[0.9rem] text-[#ccc] leading-normal"><span class="text-accent shrink-0 font-bold">—</span>Progressed from Web Designer through the graduate scheme to UI Designer and Developer.</li>
+					</ul>
 				</div>
 			</div>
 		</div>
 
 		<!-- WHAT HE BRINGS -->
-		<div class="cream" style="border-top: 1px solid #333;">
-			<div class="inner">
-				<div class="skills-section">
-					<div class="section-header">
-						<span class="section-num">02</span>
-						<h2 class="section-title">What He Brings</h2>
-					</div>
+		<div class="bg-dark-section border-t border-[#333]">
+			<div class="max-w-[52rem] mx-auto px-8 py-16">
+				<div class="flex items-baseline gap-4 mb-10 pb-4 border-b border-[#444]">
+					<span class="text-xs font-bold text-accent">02</span>
+					<h2 class="text-[1.6rem] font-black uppercase tracking-[0.08em] text-white flex-1">What He Brings</h2>
+				</div>
 
-					<div class="skills-category">
-						<h3>Technical</h3>
-						<div class="pills">
-							<span class="pill">HTML</span>
-							<span class="pill">JavaScript</span>
-							<span class="pill">Tailwind CSS</span>
-							<span class="pill">Astro</span>
-							<span class="pill">SQL</span>
-							<span class="pill">Google Tag Manager</span>
-							<span class="pill">Google Analytics</span>
-							<span class="pill">Git</span>
-							<span class="pill">AI tooling</span>
-						</div>
+				<div class="mb-8">
+					<h3 class="text-xs font-bold uppercase tracking-[0.15em] text-white pb-2 border-b-2 border-accent inline-block">Technical</h3>
+					<div class="flex flex-wrap gap-2 mt-3">
+						<span class="border border-[#444] rounded-full px-[0.9rem] py-[0.35rem] text-[0.85rem] text-[#ccc]">HTML</span>
+						<span class="border border-[#444] rounded-full px-[0.9rem] py-[0.35rem] text-[0.85rem] text-[#ccc]">JavaScript</span>
+						<span class="border border-[#444] rounded-full px-[0.9rem] py-[0.35rem] text-[0.85rem] text-[#ccc]">SASS</span>
+						<span class="border border-[#444] rounded-full px-[0.9rem] py-[0.35rem] text-[0.85rem] text-[#ccc]">Tailwind CSS</span>
+						<span class="border border-[#444] rounded-full px-[0.9rem] py-[0.35rem] text-[0.85rem] text-[#ccc]">Astro</span>
+						<span class="border border-[#444] rounded-full px-[0.9rem] py-[0.35rem] text-[0.85rem] text-[#ccc]">Gulp</span>
+						<span class="border border-[#444] rounded-full px-[0.9rem] py-[0.35rem] text-[0.85rem] text-[#ccc]">SQL</span>
+						<span class="border border-[#444] rounded-full px-[0.9rem] py-[0.35rem] text-[0.85rem] text-[#ccc]">Google Tag Manager</span>
+						<span class="border border-[#444] rounded-full px-[0.9rem] py-[0.35rem] text-[0.85rem] text-[#ccc]">Google Analytics</span>
+						<span class="border border-[#444] rounded-full px-[0.9rem] py-[0.35rem] text-[0.85rem] text-[#ccc]">GitHub</span>
+						<span class="border border-[#444] rounded-full px-[0.9rem] py-[0.35rem] text-[0.85rem] text-[#ccc]">Core Web Vitals</span>
+						<span class="border border-[#444] rounded-full px-[0.9rem] py-[0.35rem] text-[0.85rem] text-[#ccc]">AI tooling</span>
 					</div>
+				</div>
 
-					<div class="skills-category">
-						<h3>Leadership</h3>
-						<div class="pills">
-							<span class="pill">Certified Scrum Master</span>
-							<span class="pill">Agile delivery</span>
-							<span class="pill">Jira and workflow</span>
-							<span class="pill">Team development</span>
-							<span class="pill">360 feedback</span>
-							<span class="pill">Remote team leadership</span>
-							<span class="pill">Stakeholder management</span>
-							<span class="pill">Recruitment</span>
-							<span class="pill">Mentoring</span>
-						</div>
+				<div>
+					<h3 class="text-xs font-bold uppercase tracking-[0.15em] text-white pb-2 border-b-2 border-accent inline-block">Leadership</h3>
+					<div class="flex flex-wrap gap-2 mt-3">
+						<span class="border border-[#444] rounded-full px-[0.9rem] py-[0.35rem] text-[0.85rem] text-[#ccc]">Certified Scrum Master</span>
+						<span class="border border-[#444] rounded-full px-[0.9rem] py-[0.35rem] text-[0.85rem] text-[#ccc]">Agile delivery</span>
+						<span class="border border-[#444] rounded-full px-[0.9rem] py-[0.35rem] text-[0.85rem] text-[#ccc]">Jira and workflow</span>
+						<span class="border border-[#444] rounded-full px-[0.9rem] py-[0.35rem] text-[0.85rem] text-[#ccc]">Team development</span>
+						<span class="border border-[#444] rounded-full px-[0.9rem] py-[0.35rem] text-[0.85rem] text-[#ccc]">360 feedback</span>
+						<span class="border border-[#444] rounded-full px-[0.9rem] py-[0.35rem] text-[0.85rem] text-[#ccc]">Remote team leadership</span>
+						<span class="border border-[#444] rounded-full px-[0.9rem] py-[0.35rem] text-[0.85rem] text-[#ccc]">Stakeholder management</span>
+						<span class="border border-[#444] rounded-full px-[0.9rem] py-[0.35rem] text-[0.85rem] text-[#ccc]">Recruitment</span>
+						<span class="border border-[#444] rounded-full px-[0.9rem] py-[0.35rem] text-[0.85rem] text-[#ccc]">Mentoring</span>
 					</div>
 				</div>
 			</div>
 		</div>
 
 		<!-- WHAT PEOPLE SAY -->
-		<div class="cream" style="border-top: 1px solid #333;">
-			<div class="inner">
-				<div class="testimonials-section">
-					<div class="section-header">
-						<span class="section-num">03</span>
-						<h2 class="section-title">What People Say</h2>
-					</div>
+		<div class="bg-dark-section border-t border-[#333]">
+			<div class="max-w-[52rem] mx-auto px-8 py-16">
+				<div class="flex items-baseline gap-4 mb-10 pb-4 border-b border-[#444]">
+					<span class="text-xs font-bold text-accent">03</span>
+					<h2 class="text-[1.6rem] font-black uppercase tracking-[0.08em] text-white flex-1">What People Say</h2>
+				</div>
 
-					<div class="testimonial-cards">
-						<div class="testimonial-card">
-							<div class="testimonial-quote-mark">"</div>
-							<p class="testimonial-text">I had the privilege of working alongside Richard during one of THG’s most ambitious platform migrations. Every site. Every deadline. Delivered. What sets Richard apart is not just his tireless work ethic or his ability to stay completely calm under pressure, it is the way he leads. No ego, no politics, just a genuine desire to do great work and bring people with him. He is the kind of person who makes everyone around him better, and that is a rare thing. Without ever seeking the spotlight, Richard has a quiet ability to bring out something better in the people around him. I have seen it first hand. People work harder for Richard, stay longer for Richard and genuinely care about the outcome because he does.</p>
-							<p class="testimonial-name">Lucinda Lamb · Former Director · THG</p>
-						</div>
-						<div class="testimonial-card">
-							<div class="testimonial-quote-mark">"</div>
-							<p class="testimonial-text">Testimonial from a direct report — what it was like being managed by Richard and what they learned. The best ones talk about feeling supported, trusted and developed.</p>
-							<p class="testimonial-name">Name · Title · Company</p>
-						</div>
-						<div class="testimonial-card">
-							<div class="testimonial-quote-mark">"</div>
-							<p class="testimonial-text">Working with Richard under pressure is genuinely one of the biggest strengths of any project team. In CRO, we’re constantly testing ideas at pace, and Richard consistently bridges the gap between UX thinking and rapid technical implementation without compromising quality. He’s incredibly adaptable, solutions-focused, and calm when priorities shift or challenges arise. Whether it’s refining an experiment, overcoming technical blockers, or turning ambitious concepts into reality within tight timelines, Richard always finds a way forward. He’s collaborative, proactive, and someone you can rely on when delivery speed and flexibility matter most.</p>
-							<p class="testimonial-name">Matthew Cowey · Senior CRO Manager · Myprotein</p>
-						</div>
+				<div class="flex flex-col gap-4">
+					<div class="bg-dark-raised p-8 rounded">
+						<div class="text-[2rem] font-black text-accent leading-none mb-2">"</div>
+						<p class="italic text-[0.9rem] text-[#aaa] leading-[1.7] mb-4">Testimonial from a senior leader or director at THG — about Richard's ability to deliver at pace, lead through change or build a high-performing culture.</p>
+						<p class="text-[0.7rem] font-bold uppercase tracking-[0.12em] text-[#666]">Name · Title · Company</p>
+					</div>
+					<div class="bg-dark-raised p-8 rounded">
+						<div class="text-[2rem] font-black text-accent leading-none mb-2">"</div>
+						<p class="italic text-[0.9rem] text-[#aaa] leading-[1.7] mb-4">Testimonial from a direct report — what it was like being managed by Richard and what they learned. The best ones talk about feeling supported, trusted and developed.</p>
+						<p class="text-[0.7rem] font-bold uppercase tracking-[0.12em] text-[#666]">Name · Title · Company</p>
+					</div>
+					<div class="bg-dark-raised p-8 rounded">
+						<div class="text-[2rem] font-black text-accent leading-none mb-2">"</div>
+						<p class="italic text-[0.9rem] text-[#aaa] leading-[1.7] mb-4">Testimonial from a peer or cross-functional collaborator — how they'd describe working with Richard when the pressure was on.</p>
+						<p class="text-[0.7rem] font-bold uppercase tracking-[0.12em] text-[#666]">Name · Title · Company</p>
 					</div>
 				</div>
 			</div>
 		</div>
 
 		<!-- CREDENTIALS -->
-		<div class="cream" style="border-top: 1px solid #333;">
-			<div class="inner">
-				<div class="credentials-section">
-					<div class="section-header">
-						<span class="section-num">04</span>
-						<h2 class="section-title">Credentials</h2>
-					</div>
+		<div class="bg-dark-section border-t border-[#333]">
+			<div class="max-w-[52rem] mx-auto px-8 py-16">
+				<div class="flex items-baseline gap-4 mb-10 pb-4 border-b border-[#444]">
+					<span class="text-xs font-bold text-accent">04</span>
+					<h2 class="text-[1.6rem] font-black uppercase tracking-[0.08em] text-white flex-1">Credentials</h2>
+				</div>
 
-					<div class="credential">
-						<p class="credential-year">2024</p>
-						<p class="credential-title">Certified Scrum Master</p>
-						<p class="credential-institution">Self-directed</p>
-					</div>
+				<div class="pb-6 mb-6 border-b border-[#333]">
+					<p class="text-xs font-bold uppercase tracking-[0.12em] text-accent mb-1">2024</p>
+					<p class="text-lg font-bold text-white mb-1">Certified Scrum Master</p>
+					<p class="text-sm text-[#888]">Self-directed</p>
+				</div>
 
-					<div class="credential">
-						<p class="credential-year">2006 – 2007</p>
-						<p class="credential-title">BA (Hons) Digital Arts</p>
-						<p class="credential-institution">Liverpool John Moores University</p>
-					</div>
+				<div class="pb-6 mb-6 border-b border-[#333]">
+					<p class="text-xs font-bold uppercase tracking-[0.12em] text-accent mb-1">2006 – 2007</p>
+					<p class="text-lg font-bold text-white mb-1">BA (Hons) Digital Arts</p>
+					<p class="text-sm text-[#888]">Liverpool John Moores University</p>
+				</div>
 
-					<div class="credential">
-						<p class="credential-year">2004 – 2006</p>
-						<p class="credential-title">Foundation Degree, Multimedia Arts and Animation</p>
-						<p class="credential-institution">Liverpool John Moores University</p>
-					</div>
+				<div>
+					<p class="text-xs font-bold uppercase tracking-[0.12em] text-accent mb-1">2004 – 2006</p>
+					<p class="text-lg font-bold text-white mb-1">Foundation Degree, Multimedia Arts and Animation</p>
+					<p class="text-sm text-[#888]">Liverpool John Moores University</p>
 				</div>
 			</div>
 		</div>
 
 		<!-- FOOTER BAND -->
-		<div class="cv-footer-band">
-			<span class="cv-footer-cta">Embrace the Challenge</span>
-			<span class="cv-footer-ref">References available on request · richardgill.net</span>
+		<div class="bg-dark-hero p-8 flex justify-between items-center flex-wrap gap-4">
+			<span class="text-[0.7rem] font-bold uppercase tracking-[0.18em] text-accent">Embrace the Challenge</span>
+			<span class="text-[0.8rem] text-[#555]">References available on request · richardgill.net</span>
 		</div>
 
 	</div>
+
 </BaseLayout>

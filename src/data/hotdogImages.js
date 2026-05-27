@@ -238,9 +238,16 @@ export const hotdogImages = [
 		lat: 53.1905, lng: -2.8917
 	},
 	{
+		file: 'porthAigo2.webp',
+		title: 'Porth Aigo II',
+		description: 'Back on the Welsh coast — some spots are worth a second visit.',
+		width: 2592, height: 1952,
+		lat: 53.3050, lng: -4.6300
+	},
+	{
 		file: 'wherenext.webp',
 		title: 'Where Next?',
 		description: 'The journey continues — where will the next hot dog be?',
 		width: 1024, height: 768
-	}
+	},
 ];
