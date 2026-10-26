@@ -251,7 +251,7 @@ const locationsJson = JSON.stringify(locations);
 
 		const map = L.map('map', { attributionControl: false }).setView([53.0, 2.5], 4);
 
-		L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+		L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png?key=cb1_2gnr_1_7843833bbae77bd1655245cf', {
 			attribution: '',
 			maxZoom: 19,
 		}).addTo(map);
