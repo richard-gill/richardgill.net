@@ -1,0 +1,358 @@
+---
+import '../styles/global.css';
+---
+
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="robots" content="noindex, nofollow" />
+		<title>Hot Dog Admin</title>
+		<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+		<style>
+			#map { height: 260px; border-radius: 8px; }
+			.field { width: 100%; background: #2a2a2a; border: 1px solid #444; border-radius: 8px; padding: 0.7rem; color: #fff; font-size: 16px; }
+			.btn { background: #e8a33d; color: #1a1a1a; font-weight: 700; border-radius: 8px; padding: 0.75rem 1rem; }
+			.btn:disabled { opacity: 0.5; }
+			.btn-alt { background: #333; color: #fff; border-radius: 8px; padding: 0.6rem 0.9rem; font-size: 0.9rem; }
+		</style>
+	</head>
+	<body class="bg-[#1a1a1a] text-white p-4 max-w-xl mx-auto">
+		<h1 class="text-2xl font-bold mb-4">🌭 Add a Hot Dog</h1>
+
+		<!-- Login -->
+		<section id="login" class="hidden space-y-3">
+			<p class="text-gray-300 text-sm">
+				Paste a GitHub fine-grained personal access token with <b>Contents: Read and write</b> access to
+				the <code>richardgill.net</code> repo. It is stored only in this browser.
+			</p>
+			<input id="token" type="password" class="field" placeholder="github_pat_..." autocomplete="off" />
+			<button id="loginBtn" class="btn w-full">Log in</button>
+			<p id="loginMsg" class="text-red-400 text-sm"></p>
+		</section>
+
+		<!-- Upload form -->
+		<section id="app" class="hidden space-y-4">
+			<div class="flex justify-between items-center text-sm text-gray-400">
+				<span id="who"></span>
+				<button id="logoutBtn" class="underline">Log out</button>
+			</div>
+
+			<label class="block">
+				<span class="text-sm text-gray-300">Photo</span>
+				<input id="photo" type="file" accept="image/*" class="field mt-1" />
+			</label>
+			<img id="preview" class="hidden w-full rounded-lg" alt="Preview" />
+
+			<label class="block">
+				<span class="text-sm text-gray-300">Title</span>
+				<input id="title" class="field mt-1" placeholder="e.g. Chester Market" />
+			</label>
+
+			<label class="block">
+				<span class="text-sm text-gray-300">Description</span>
+				<textarea id="description" rows="3" class="field mt-1" placeholder="A hot dog from..."></textarea>
+			</label>
+
+			<div class="space-y-2">
+				<span class="text-sm text-gray-300">Location</span>
+				<div class="flex gap-2">
+					<input id="lat" type="number" step="any" inputmode="decimal" class="field" placeholder="Latitude" />
+					<input id="lng" type="number" step="any" inputmode="decimal" class="field" placeholder="Longitude" />
+				</div>
+				<div class="flex gap-2 flex-wrap items-center">
+					<button id="hereBtn" type="button" class="btn-alt">📍 Use my location</button>
+					<span id="locMsg" class="text-xs text-gray-400"></span>
+				</div>
+				<div id="map"></div>
+				<p class="text-xs text-gray-500">Tap the map to set or adjust the location.</p>
+			</div>
+
+			<button id="publishBtn" class="btn w-full">Publish</button>
+			<pre id="status" class="text-sm text-gray-300 whitespace-pre-wrap"></pre>
+		</section>
+
+		<script>
+			import L from 'leaflet';
+			import 'leaflet/dist/leaflet.css';
+			import exifr from 'exifr';
+
+			const OWNER = 'richard-gill';
+			const REPO = 'richardgill.net';
+			const BRANCH = 'main';
+			const DATA_PATH = 'src/data/hotdogImages.js';
+			const IMG_DIR = 'public/images';
+			const TOKEN_KEY = 'hotdogAdminToken';
+
+			const $ = (id) => document.getElementById(id);
+
+			// ---------- storage ----------
+			const getToken = () => { try { return localStorage.getItem(TOKEN_KEY); } catch { return null; } };
+			const setToken = (t) => { try { t ? localStorage.setItem(TOKEN_KEY, t) : localStorage.removeItem(TOKEN_KEY); } catch {} };
+
+			// ---------- GitHub API ----------
+			async function gh(path, opts = {}) {
+				const res = await fetch(`https://api.github.com${path}`, {
+					...opts,
+					headers: {
+						Accept: 'application/vnd.github+json',
+						Authorization: `Bearer ${getToken()}`,
+						'X-GitHub-Api-Version': '2022-11-28',
+						...(opts.body ? { 'Content-Type': 'application/json' } : {}),
+					},
+				});
+				if (!res.ok) {
+					const text = await res.text();
+					throw new Error(`GitHub ${res.status}: ${text.slice(0, 200)}`);
+				}
+				return res.json();
+			}
+
+			async function checkLogin() {
+				const repo = await gh(`/repos/${OWNER}/${REPO}`);
+				if (!repo.permissions?.push) throw new Error('Token does not have write access to the repo.');
+				const user = await gh('/user').catch(() => null);
+				return user?.login || 'token';
+			}
+
+			async function showApp() {
+				try {
+					const who = await checkLogin();
+					$('who').textContent = `Logged in as ${who}`;
+					$('login').classList.add('hidden');
+					$('app').classList.remove('hidden');
+					map.invalidateSize();
+				} catch (e) {
+					setToken(null);
+					$('loginMsg').textContent = e.message;
+					$('login').classList.remove('hidden');
+					$('app').classList.add('hidden');
+				}
+			}
+
+			$('loginBtn').addEventListener('click', () => {
+				const t = $('token').value.trim();
+				if (!t) return;
+				setToken(t);
+				$('loginMsg').textContent = '';
+				showApp();
+			});
+			$('logoutBtn').addEventListener('click', () => {
+				setToken(null);
+				location.reload();
+			});
+
+			// ---------- map ----------
+			const map = L.map('map').setView([53.19, -2.89], 4);
+			L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png?key=cb1_2gnr_1_7843833bbae77bd1655245cf', {
+				attribution: '&copy; OpenStreetMap &copy; CARTO',
+				maxZoom: 19,
+			}).addTo(map);
+			let marker = null;
+
+			function setLocation(lat, lng, zoom) {
+				lat = Number(lat.toFixed(4));
+				lng = Number(lng.toFixed(4));
+				$('lat').value = lat;
+				$('lng').value = lng;
+				if (marker) marker.setLatLng([lat, lng]);
+				else marker = L.marker([lat, lng], { icon: L.divIcon({ html: '🌭', className: 'text-2xl', iconSize: [28, 28] }) }).addTo(map);
+				map.setView([lat, lng], zoom ?? Math.max(map.getZoom(), 13));
+			}
+
+			map.on('click', (e) => setLocation(e.latlng.lat, e.latlng.lng, map.getZoom()));
+			['lat', 'lng'].forEach((id) =>
+				$(id).addEventListener('change', () => {
+					const lat = parseFloat($('lat').value), lng = parseFloat($('lng').value);
+					if (!isNaN(lat) && !isNaN(lng)) setLocation(lat, lng);
+				}),
+			);
+
+			$('hereBtn').addEventListener('click', () => {
+				$('locMsg').textContent = 'Finding you…';
+				navigator.geolocation.getCurrentPosition(
+					(p) => { setLocation(p.coords.latitude, p.coords.longitude, 15); $('locMsg').textContent = 'Using current location'; },
+					(err) => { $('locMsg').textContent = `Couldn't get location: ${err.message}`; },
+					{ enableHighAccuracy: true, timeout: 15000 },
+				);
+			});
+
+			// ---------- photo ----------
+			let loadedImg = null;
+
+			$('photo').addEventListener('change', async () => {
+				const file = $('photo').files[0];
+				if (!file) return;
+				const url = URL.createObjectURL(file);
+				const img = new Image();
+				img.src = url;
+				await img.decode();
+				loadedImg = img;
+				$('preview').src = url;
+				$('preview').classList.remove('hidden');
+
+				try {
+					const gps = await exifr.gps(file);
+					if (gps?.latitude && gps?.longitude) {
+						setLocation(gps.latitude, gps.longitude, 15);
+						$('locMsg').textContent = 'Location read from photo';
+					} else {
+						$('locMsg').textContent = 'No GPS in photo, use your location or tap the map';
+					}
+				} catch {
+					$('locMsg').textContent = 'No GPS in photo, use your location or tap the map';
+				}
+			});
+
+			// Safari can't encode WebP from a canvas, so fall back to JPEG there.
+			const supportsWebp = (() => {
+				const c = document.createElement('canvas');
+				c.width = c.height = 1;
+				return c.toDataURL('image/webp').startsWith('data:image/webp');
+			})();
+			const MIME = supportsWebp ? 'image/webp' : 'image/jpeg';
+			const EXT = supportsWebp ? 'webp' : 'jpg';
+
+			function resize(img, { maxLong, maxWidth }) {
+				const w0 = img.naturalWidth, h0 = img.naturalHeight;
+				let scale = 1;
+				if (maxLong) scale = Math.min(1, maxLong / Math.max(w0, h0));
+				if (maxWidth) scale = Math.min(1, maxWidth / w0);
+				const w = Math.round(w0 * scale), h = Math.round(h0 * scale);
+				const c = document.createElement('canvas');
+				c.width = w;
+				c.height = h;
+				const ctx = c.getContext('2d');
+				ctx.imageSmoothingQuality = 'high';
+				ctx.drawImage(img, 0, 0, w, h);
+				return new Promise((resolve) => c.toBlob((blob) => resolve({ blob, w, h }), MIME, 0.82));
+			}
+
+			const toBase64 = (blob) =>
+				new Promise((resolve) => {
+					const r = new FileReader();
+					r.onload = () => resolve(r.result.split(',')[1]);
+					r.readAsDataURL(blob);
+				});
+
+			const b64ToUtf8 = (b64) => new TextDecoder().decode(Uint8Array.from(atob(b64.replace(/\n/g, '')), (c) => c.charCodeAt(0)));
+			const utf8ToB64 = (str) => {
+				const bytes = new TextEncoder().encode(str);
+				let bin = '';
+				bytes.forEach((b) => (bin += String.fromCharCode(b)));
+				return btoa(bin);
+			};
+
+			function slugify(title) {
+				const words = title.replace(/['’]/g, '').replace(/[^a-zA-Z0-9 ]/g, ' ').trim().split(/\s+/).filter(Boolean);
+				if (!words.length) return 'hotdog';
+				return words.map((w, i) => (i === 0 ? w.toLowerCase() : w[0].toUpperCase() + w.slice(1).toLowerCase())).join('');
+			}
+
+			const jsString = (s) => `'${s.replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/\r?\n/g, ' ')}'`;
+
+			function addEntry(source, entry) {
+				const block =
+					`\t{\n` +
+					`\t\tfile: ${jsString(entry.file)},\n` +
+					`\t\ttitle: ${jsString(entry.title)},\n` +
+					`\t\tdescription: ${jsString(entry.description)},\n` +
+					`\t\twidth: ${entry.width}, height: ${entry.height},\n` +
+					`\t\tlat: ${entry.lat}, lng: ${entry.lng}\n` +
+					`\t},\n`;
+				// Keep the "Where Next?" placeholder as the last item.
+				const whereNext = source.search(/\t\{\s*\n\s*file: 'wherenext\.webp'/);
+				const at = whereNext !== -1 ? whereNext : source.lastIndexOf('];');
+				if (at === -1) throw new Error('Could not find where to insert in hotdogImages.js');
+				return source.slice(0, at) + block + source.slice(at);
+			}
+
+			const status = (msg) => ($('status').textContent = msg);
+
+			// ---------- publish ----------
+			$('publishBtn').addEventListener('click', async () => {
+				const title = $('title').value.trim();
+				const description = $('description').value.trim();
+				const lat = parseFloat($('lat').value), lng = parseFloat($('lng').value);
+				if (!loadedImg) return status('Pick a photo first.');
+				if (!title) return status('Add a title.');
+				if (!description) return status('Add a description.');
+				if (isNaN(lat) || isNaN(lng)) return status('Set a location.');
+
+				$('publishBtn').disabled = true;
+				try {
+					status('Resizing images…');
+					const [full, thumb, sm] = await Promise.all([
+						resize(loadedImg, { maxLong: 2048 }),
+						resize(loadedImg, { maxWidth: 800 }),
+						resize(loadedImg, { maxWidth: 500 }),
+					]);
+
+					status('Reading current data from GitHub…');
+					const ref = await gh(`/repos/${OWNER}/${REPO}/git/ref/heads/${BRANCH}`);
+					const headSha = ref.object.sha;
+					const headCommit = await gh(`/repos/${OWNER}/${REPO}/git/commits/${headSha}`);
+					const dataFile = await gh(`/repos/${OWNER}/${REPO}/contents/${DATA_PATH}?ref=${headSha}`);
+					const source = b64ToUtf8(dataFile.content);
+
+					let base = slugify(title), name = `${base}.${EXT}`, n = 2;
+					while (source.includes(`'${name}'`)) name = `${base}${n++}.${EXT}`;
+
+					const newSource = addEntry(source, {
+						file: name, title, description,
+						width: full.w, height: full.h,
+						lat: Number(lat.toFixed(4)), lng: Number(lng.toFixed(4)),
+					});
+
+					status('Uploading images…');
+					const blob = async (content, encoding) =>
+						(await gh(`/repos/${OWNER}/${REPO}/git/blobs`, { method: 'POST', body: JSON.stringify({ content, encoding }) })).sha;
+					const [fullSha, thumbSha, smSha, dataSha] = await Promise.all([
+						blob(await toBase64(full.blob), 'base64'),
+						blob(await toBase64(thumb.blob), 'base64'),
+						blob(await toBase64(sm.blob), 'base64'),
+						blob(utf8ToB64(newSource), 'base64'),
+					]);
+
+					status('Committing…');
+					const tree = await gh(`/repos/${OWNER}/${REPO}/git/trees`, {
+						method: 'POST',
+						body: JSON.stringify({
+							base_tree: headCommit.tree.sha,
+							tree: [
+								{ path: `${IMG_DIR}/${name}`, mode: '100644', type: 'blob', sha: fullSha },
+								{ path: `${IMG_DIR}/thumbs/${name}`, mode: '100644', type: 'blob', sha: thumbSha },
+								{ path: `${IMG_DIR}/thumbs/sm/${name}`, mode: '100644', type: 'blob', sha: smSha },
+								{ path: DATA_PATH, mode: '100644', type: 'blob', sha: dataSha },
+							],
+						}),
+					});
+					const commit = await gh(`/repos/${OWNER}/${REPO}/git/commits`, {
+						method: 'POST',
+						body: JSON.stringify({ message: `Add hot dog: ${title}`, tree: tree.sha, parents: [headSha] }),
+					});
+					await gh(`/repos/${OWNER}/${REPO}/git/refs/heads/${BRANCH}`, {
+						method: 'PATCH',
+						body: JSON.stringify({ sha: commit.sha }),
+					});
+
+					status(`✅ Published "${title}" as ${name}.\nThe site will update in a minute or two once the deploy finishes.`);
+					$('photo').value = '';
+					$('title').value = '';
+					$('description').value = '';
+					$('preview').classList.add('hidden');
+					loadedImg = null;
+				} catch (e) {
+					status(`❌ ${e.message}`);
+				} finally {
+					$('publishBtn').disabled = false;
+				}
+			});
+
+			// ---------- init ----------
+			if (getToken()) showApp();
+			else $('login').classList.remove('hidden');
+		</script>
+	</body>
+</html>

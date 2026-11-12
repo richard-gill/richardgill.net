@@ -13,6 +13,7 @@
     "tailwindcss": "latest"
   },
   "dependencies": {
+    "exifr": "^7.1.3",
     "leaflet": "^1.9.4"
   }
 }
