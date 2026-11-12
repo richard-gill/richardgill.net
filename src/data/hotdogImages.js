@@ -245,6 +245,13 @@ export const hotdogImages = [
 		lat: 52.8510, lng: -4.7236
 	},
 	{
+		file: 'beechwoodCentre.webp',
+		title: 'Beechwood Centre',
+		description: 'Family fun day community center hot dog.',
+		width: 1536, height: 2048,
+		lat: 53.3181, lng: -2.7067
+	},
+	{
 		file: 'wherenext.webp',
 		title: 'Where Next?',
 		description: 'The journey continues — where will the next hot dog be?',
