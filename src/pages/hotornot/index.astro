@@ -1,0 +1,231 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { hotdogImages } from '../../data/hotdogImages.js';
+
+// Every real hot dog (skip the "Where Next?" placeholder).
+const deck = hotdogImages
+	.filter((img) => img.file !== 'wherenext.webp')
+	.map(({ file, title, description, rating }) => ({ file, title, description, rating }));
+---
+
+<BaseLayout
+	title="Hot or Not Dog"
+	description="Swipe right for hot, left for not. Vote on every hot dog from Richard Gill's Hot Dog World Tour."
+>
+	<style is:global>
+		#stack {
+			position: relative;
+			width: min(340px, 100%);
+			aspect-ratio: 3 / 4;
+			margin: 0 auto;
+			touch-action: pan-y;
+			user-select: none;
+		}
+		#stack .card {
+			position: absolute;
+			inset: 0;
+			border-radius: 1rem;
+			overflow: hidden;
+			background: #242424;
+			box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+			cursor: grab;
+			will-change: transform;
+		}
+		#stack .card.dragging { cursor: grabbing; }
+		#stack .card.animate { transition: transform 0.35s ease, opacity 0.35s ease; }
+		#stack .card img {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+			pointer-events: none;
+			-webkit-user-drag: none;
+		}
+		#stack .card .info {
+			position: absolute;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			padding: 2.5rem 1rem 1rem;
+			background: linear-gradient(transparent, rgba(0, 0, 0, 0.85));
+		}
+		#stack .stamp {
+			position: absolute;
+			top: 1.25rem;
+			padding: 0.2rem 0.7rem;
+			border: 4px solid;
+			border-radius: 0.5rem;
+			font-size: 1.75rem;
+			font-weight: 800;
+			letter-spacing: 0.05em;
+			opacity: 0;
+			pointer-events: none;
+		}
+		#stack .stamp.hot { left: 1rem; color: #f97316; border-color: #f97316; transform: rotate(-15deg); }
+		#stack .stamp.not { right: 1rem; color: #38bdf8; border-color: #38bdf8; transform: rotate(15deg); }
+		#voting .vote-btn {
+			width: 4rem;
+			height: 4rem;
+			border-radius: 50%;
+			font-size: 1.75rem;
+			background: #242424;
+			border-width: 2px;
+			border-style: solid;
+			transition: transform 0.15s, background 0.15s;
+		}
+		#voting .vote-btn:hover { transform: scale(1.1); }
+		#voting .vote-btn:disabled { opacity: 0.4; transform: none; }
+	</style>
+
+	<script type="application/json" id="deck-data" set:html={JSON.stringify(deck)}></script>
+
+	<header class="text-center mb-6">
+		<h1 class="text-3xl font-bold mb-1">🔥 Hot or Not Dog ❄️</h1>
+		<p class="text-gray-400">Swipe right if it's hot, left if it's not.</p>
+	</header>
+
+	<main class="max-w-xl mx-auto mb-8">
+		<section id="voting">
+			<div id="stack" aria-live="polite"></div>
+			<div class="flex justify-center items-center gap-8 mt-6">
+				<button id="notBtn" class="vote-btn border-sky-400 hover:bg-sky-400/20" aria-label="Not (left arrow)">❄️</button>
+				<span id="progress" class="text-gray-400 text-sm w-16 text-center"></span>
+				<button id="hotBtn" class="vote-btn border-orange-500 hover:bg-orange-500/20" aria-label="Hot (right arrow)">🔥</button>
+			</div>
+			<p id="voteError" class="text-center text-red-400 text-sm mt-3"></p>
+		</section>
+
+		<section id="done" class="hidden">
+			<h2 class="text-2xl font-bold text-center mb-1">The results are in!</h2>
+			<p class="text-center text-gray-400 mb-6">What everyone thinks of each hot dog, hottest first.</p>
+			<div id="results" class="space-y-2"></div>
+		</section>
+	</main>
+
+	<div class="text-center space-x-4">
+		<a href="/hotornot/results" class="text-red-400 text-sm no-underline hover:underline">📊 Results</a>
+		<a href="/" class="text-red-400 text-sm no-underline hover:underline">← Gallery</a>
+	</div>
+
+	<script>
+		import { castVote, getVoted, renderResults } from '../../scripts/hotornot.js';
+
+		const all = JSON.parse(document.getElementById('deck-data').textContent);
+		const voted = getVoted();
+
+		// Only show pictures this browser hasn't voted on yet, in a random order.
+		const deck = all.filter((img) => !(img.file in voted));
+		for (let i = deck.length - 1; i > 0; i--) {
+			const j = Math.floor(Math.random() * (i + 1));
+			[deck[i], deck[j]] = [deck[j], deck[i]];
+		}
+
+		const stack = document.getElementById('stack');
+		const progress = document.getElementById('progress');
+		const hotBtn = document.getElementById('hotBtn');
+		const notBtn = document.getElementById('notBtn');
+		const errorEl = document.getElementById('voteError');
+		let index = 0;
+		let busy = false;
+
+		const esc = (s) =>
+			String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
+
+		function makeCard(img) {
+			const card = document.createElement('div');
+			card.className = 'card';
+			card.innerHTML =
+				`<img src="/images/thumbs/${encodeURIComponent(img.file)}" alt="${esc(img.title)}" draggable="false">` +
+				`<span class="stamp hot">HOT</span><span class="stamp not">NOT</span>` +
+				`<div class="info"><h2 class="text-xl font-bold">${esc(img.title)}</h2>` +
+				`<p class="text-sm text-gray-300">${esc(img.description)}</p></div>`;
+			return card;
+		}
+
+		function showDone() {
+			document.getElementById('voting').classList.add('hidden');
+			document.getElementById('done').classList.remove('hidden');
+			renderResults(document.getElementById('results'), all);
+		}
+
+		// Keep the current card on top and the next one peeking underneath.
+		function render() {
+			if (index >= deck.length) return showDone();
+			progress.textContent = `${index + 1} / ${deck.length}`;
+			[...stack.children].forEach((c) => { if (!c.dataset.leaving) c.remove(); });
+			const next = deck[index + 1];
+			if (next) {
+				const under = makeCard(next);
+				under.style.transform = 'scale(0.95) translateY(12px)';
+				under.style.pointerEvents = 'none';
+				stack.appendChild(under);
+			}
+			const top = makeCard(deck[index]);
+			stack.appendChild(top);
+			attachDrag(top);
+		}
+
+		function setStamp(card, dx) {
+			const strength = Math.min(Math.abs(dx) / 100, 1);
+			card.querySelector('.stamp.hot').style.opacity = dx > 0 ? strength : 0;
+			card.querySelector('.stamp.not').style.opacity = dx < 0 ? strength : 0;
+		}
+
+		function vote(hot) {
+			if (busy || index >= deck.length) return;
+			busy = true;
+			const img = deck[index];
+			const card = stack.lastElementChild;
+			card.dataset.leaving = '1';
+			card.classList.add('animate');
+			setStamp(card, hot ? 100 : -100);
+			card.style.transform = `translateX(${hot ? 150 : -150}%) rotate(${hot ? 25 : -25}deg)`;
+			card.style.opacity = '0';
+			setTimeout(() => card.remove(), 350);
+
+			castVote(img.file, hot).catch((e) => (errorEl.textContent = `${e.message}. Your vote may not have been saved.`));
+
+			index++;
+			setTimeout(() => { busy = false; render(); }, 200);
+		}
+
+		function attachDrag(card) {
+			let startX = 0, startY = 0, dx = 0, dy = 0, dragging = false;
+			card.addEventListener('pointerdown', (e) => {
+				dragging = true;
+				startX = e.clientX;
+				startY = e.clientY;
+				card.setPointerCapture(e.pointerId);
+				card.classList.add('dragging');
+				card.classList.remove('animate');
+			});
+			card.addEventListener('pointermove', (e) => {
+				if (!dragging) return;
+				dx = e.clientX - startX;
+				dy = e.clientY - startY;
+				card.style.transform = `translate(${dx}px, ${dy * 0.3}px) rotate(${dx / 15}deg)`;
+				setStamp(card, dx);
+			});
+			const end = () => {
+				if (!dragging) return;
+				dragging = false;
+				card.classList.remove('dragging');
+				if (Math.abs(dx) > 100) return vote(dx > 0);
+				card.classList.add('animate');
+				card.style.transform = '';
+				setStamp(card, 0);
+				dx = dy = 0;
+			};
+			card.addEventListener('pointerup', end);
+			card.addEventListener('pointercancel', end);
+		}
+
+		hotBtn.addEventListener('click', () => vote(true));
+		notBtn.addEventListener('click', () => vote(false));
+		document.addEventListener('keydown', (e) => {
+			if (e.key === 'ArrowRight') vote(true);
+			if (e.key === 'ArrowLeft') vote(false);
+		});
+
+		render();
+	</script>
+</BaseLayout>
