@@ -252,6 +252,13 @@ export const hotdogImages = [
 		lat: 53.3181, lng: -2.7067
 	},
 	{
+		file: 'thgBlackFridayHotDog.webp',
+		title: 'THG Black Friday Hot Dog',
+		description: 'Black Friday Hot Dog!',
+		width: 1542, height: 2048,
+		lat: 53.3589, lng: -2.297
+	},
+	{
 		file: 'wherenext.webp',
 		title: 'Where Next?',
 		description: 'The journey continues — where will the next hot dog be?',
