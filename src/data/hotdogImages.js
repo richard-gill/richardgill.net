@@ -256,7 +256,9 @@ export const hotdogImages = [
 		title: 'THG Black Friday Hot Dog',
 		description: 'Black Friday Hot Dog!',
 		width: 1542, height: 2048,
-		lat: 53.3589, lng: -2.297
+		lat: 53.3589, lng: -2.297,
+		rating: 4,
+		date: '2026-11-27'
 	},
 	{
 		file: 'wherenext.webp',

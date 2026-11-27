@@ -156,6 +156,13 @@ const locationsJson = JSON.stringify(locations);
 			line-height: 1.5;
 		}
 
+		:global(.stars) {
+			color: #facc15;
+			font-size: 1rem;
+			letter-spacing: 0.1em;
+			margin-bottom: 0.35rem;
+		}
+
 		.leaflet-control-attribution {
 			display: none !important;
 		}
@@ -258,6 +265,9 @@ const locationsJson = JSON.stringify(locations);
 
 		const markers = [];
 
+		const starsHtml = (n) =>
+			n ? `<div class="stars" aria-label="${n} out of 5 stars">${'★'.repeat(n)}${'☆'.repeat(5 - n)}</div>` : '';
+
 		locationsData.forEach((loc) => {
 			const marker = L.marker([loc.lat, loc.lng], {
 				icon: createPinIcon(),
@@ -268,6 +278,7 @@ const locationsJson = JSON.stringify(locations);
 				`<div class="tooltip-content">` +
 				`<img src="/images/${loc.file}" alt="${loc.title}" loading="lazy" width="200" height="150">` +
 				`<h3>${loc.title}</h3>` +
+				starsHtml(loc.rating) +
 				`<p>${loc.description}</p>` +
 				`</div>`;
 
@@ -282,6 +293,7 @@ const locationsJson = JSON.stringify(locations);
 				`<div class="popup-content">` +
 				`<img src="/images/${loc.file}" alt="${loc.title}" loading="lazy" width="280" height="200">` +
 				`<h3>${loc.title}</h3>` +
+				starsHtml(loc.rating) +
 				`<p>${loc.description}</p>` +
 				`</div>`;
 

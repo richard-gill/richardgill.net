@@ -15,6 +15,9 @@ import '../styles/global.css';
 			.field { width: 100%; background: #2a2a2a; border: 1px solid #444; border-radius: 8px; padding: 0.7rem; color: #fff; font-size: 16px; }
 			.btn { background: #e8a33d; color: #1a1a1a; font-weight: 700; border-radius: 8px; padding: 0.75rem 1rem; }
 			.btn:disabled { opacity: 0.5; }
+			.star { font-size: 2.25rem; line-height: 1; color: #444; padding: 0 0.1rem; transition: color 0.15s, transform 0.15s; }
+			.star.on { color: #e8a33d; }
+			.star:active { transform: scale(1.2); }
 			.btn-alt { background: #333; color: #fff; border-radius: 8px; padding: 0.6rem 0.9rem; font-size: 0.9rem; }
 		</style>
 	</head>
@@ -53,6 +56,15 @@ import '../styles/global.css';
 				<span class="text-sm text-gray-300">Description</span>
 				<textarea id="description" rows="3" class="field mt-1" placeholder="A hot dog from..."></textarea>
 			</label>
+
+			<div class="block">
+				<span class="text-sm text-gray-300">Rating <span class="text-gray-500">(optional)</span></span>
+				<div id="stars" class="flex gap-1 mt-1" role="radiogroup" aria-label="Rating">
+					{[1, 2, 3, 4, 5].map((n) => (
+						<button type="button" class="star" data-value={n} role="radio" aria-checked="false" aria-label={`${n} star${n > 1 ? 's' : ''}`}>★</button>
+					))}
+				</div>
+			</div>
 
 			<div class="space-y-2">
 				<span class="text-sm text-gray-300">Location</span>
@@ -258,7 +270,9 @@ import '../styles/global.css';
 					`\t\ttitle: ${jsString(entry.title)},\n` +
 					`\t\tdescription: ${jsString(entry.description)},\n` +
 					`\t\twidth: ${entry.width}, height: ${entry.height},\n` +
-					`\t\tlat: ${entry.lat}, lng: ${entry.lng}\n` +
+					`\t\tlat: ${entry.lat}, lng: ${entry.lng},\n` +
+					(entry.rating ? `\t\trating: ${entry.rating},\n` : '') +
+					`\t\tdate: ${jsString(entry.date)}\n` +
 					`\t},\n`;
 				// Keep the "Where Next?" placeholder as the last item.
 				const whereNext = source.search(/\t\{\s*\n\s*file: 'wherenext\.webp'/);
@@ -268,6 +282,24 @@ import '../styles/global.css';
 			}
 
 			const status = (msg) => ($('status').textContent = msg);
+
+			// ---------- star rating ----------
+			let rating = 0;
+			const starBtns = [...document.querySelectorAll('#stars .star')];
+			function setRating(n) {
+				rating = n;
+				starBtns.forEach((b) => {
+					const on = Number(b.dataset.value) <= n;
+					b.classList.toggle('on', on);
+					b.setAttribute('aria-checked', String(Number(b.dataset.value) === n));
+				});
+			}
+			starBtns.forEach((b) =>
+				b.addEventListener('click', () => {
+					const n = Number(b.dataset.value);
+					setRating(n === rating ? 0 : n); // tap the same star again to clear
+				}),
+			);
 
 			// ---------- publish ----------
 			$('publishBtn').addEventListener('click', async () => {
@@ -302,6 +334,8 @@ import '../styles/global.css';
 						file: name, title, description,
 						width: full.w, height: full.h,
 						lat: Number(lat.toFixed(4)), lng: Number(lng.toFixed(4)),
+						rating,
+						date: new Date().toLocaleDateString('en-CA'), // local YYYY-MM-DD; resets the "days since" counter
 					});
 
 					status('Uploading images…');
@@ -340,6 +374,7 @@ import '../styles/global.css';
 					$('photo').value = '';
 					$('title').value = '';
 					$('description').value = '';
+					setRating(0);
 					$('preview').classList.add('hidden');
 					loadedImg = null;
 				} catch (e) {

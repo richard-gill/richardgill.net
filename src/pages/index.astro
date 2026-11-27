@@ -1,6 +1,13 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { hotdogImages } from '../data/hotdogImages.js';
+
+// Most recent dated hot dog (YYYY-MM-DD strings sort chronologically).
+const lastHotdogDate = hotdogImages
+	.map((img) => img.date)
+	.filter(Boolean)
+	.sort()
+	.at(-1);
 ---
 
 <BaseLayout
@@ -20,7 +27,28 @@ import { hotdogImages } from '../data/hotdogImages.js';
 			I love Hot Dogs! I hope you enjoy looking at my Hot Dogs from around the world as much as I have enjoyed
 			traveling and eating them.
 		</p>
+		{lastHotdogDate && (
+			<p class="mt-4 text-gray-400" id="days-since" data-date={lastHotdogDate}>
+				<span id="days-since-count" class="text-3xl font-bold text-red-400 align-middle">–</span>
+				<span id="days-since-label" class="ml-1">days since my last hot dog 🌭</span>
+			</p>
+		)}
 	</header>
+
+	<script>
+		// Computed in the browser so the count stays current on a static site.
+		const el = document.getElementById('days-since');
+		if (el) {
+			const [y, m, d] = el.dataset.date.split('-').map(Number);
+			const last = new Date(y, m - 1, d);
+			const now = new Date();
+			const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+			const days = Math.max(0, Math.round((today - last) / 86400000));
+			document.getElementById('days-since-count').textContent = days;
+			document.getElementById('days-since-label').textContent =
+				`${days === 1 ? 'day' : 'days'} since my last hot dog 🌭`;
+		}
+	</script>
 
 	<main class="mb-8">
 		<div class="masonry" id="gallery"></div>
@@ -45,6 +73,7 @@ import { hotdogImages } from '../data/hotdogImages.js';
 				/>
 				<div class="text-center mt-4 max-w-[600px]">
 					<h2 id="lightbox-title" class="text-2xl mb-2"></h2>
+					<p id="lightbox-rating" class="text-2xl text-yellow-400 mb-2 tracking-wider"></p>
 					<p id="lightbox-desc" class="text-lg text-gray-400 leading-relaxed"></p>
 				</div>
 			</div>
@@ -67,10 +96,13 @@ import { hotdogImages } from '../data/hotdogImages.js';
 		const lightboxImg = document.getElementById('lightbox-img');
 		const lightboxTitle = document.getElementById('lightbox-title');
 		const lightboxDesc = document.getElementById('lightbox-desc');
+		const lightboxRating = document.getElementById('lightbox-rating');
 		const lightboxCounter = document.getElementById('lightbox-counter');
 		const lightboxClose = document.getElementById('lightbox-close');
 		const lightboxPrev = document.getElementById('lightbox-prev');
 		const lightboxNext = document.getElementById('lightbox-next');
+
+		const stars = (n) => (n ? '★'.repeat(n) + '☆'.repeat(5 - n) : '');
 
 		let currentIndex = 0;
 		const loaded = {};
@@ -102,7 +134,10 @@ import { hotdogImages } from '../data/hotdogImages.js';
 
 			const overlay = document.createElement('div');
 			overlay.className = 'overlay';
-			overlay.innerHTML = `<h3>${img.title}</h3><p>${img.description}</p>`;
+			overlay.innerHTML =
+				`<h3>${img.title}</h3>` +
+				(img.rating ? `<p class="text-yellow-400" aria-label="${img.rating} out of 5 stars">${stars(img.rating)}</p>` : '') +
+				`<p>${img.description}</p>`;
 
 			item.appendChild(image);
 			item.appendChild(overlay);
@@ -131,6 +166,8 @@ import { hotdogImages } from '../data/hotdogImages.js';
 			lightboxImg.alt = img.title;
 			lightboxTitle.textContent = img.title;
 			lightboxDesc.textContent = img.description;
+			lightboxRating.textContent = stars(img.rating);
+			lightboxRating.setAttribute('aria-label', img.rating ? `${img.rating} out of 5 stars` : '');
 			lightboxCounter.textContent = `${currentIndex + 1} / ${hotdogImages.length}`;
 		}
 
