@@ -7,6 +7,7 @@ const locationsJson = JSON.stringify(locations);
 ---
 
 <BaseLayout
+	logo={false}
 	title="Hot Dog World Tour - Interactive Map"
 	description="View the interactive map of all hot dog locations from Richard Gill's world tour."
 >
@@ -41,6 +42,15 @@ const locationsJson = JSON.stringify(locations);
 			padding: 0.6rem 1.25rem;
 			border-radius: 8px;
 			white-space: nowrap;
+			display: flex;
+			align-items: center;
+			gap: 0.6rem;
+		}
+
+		.map-header img {
+			width: 44px;
+			height: auto;
+			display: block;
 		}
 
 		.map-header h1 {
@@ -214,6 +224,9 @@ const locationsJson = JSON.stringify(locations);
 	<div id="map"></div>
 
 	<div class="map-header">
+		<a href="/" aria-label="Hot Dog World Tour home">
+			<img src="/images/thumbs/sm/hotdoglogo.webp" alt="Hot Dog World Tour" width="404" height="352" />
+		</a>
 		<h1>Hot Dog World Tour Map</h1>
 	</div>
 

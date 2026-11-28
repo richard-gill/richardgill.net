@@ -17,7 +17,10 @@ const headers = {
 };
 
 // Remember which pictures this browser has voted on, so people get one vote each per picture.
-const VOTED_KEY = 'hotornot-voted';
+// Change VOTE_ROUND to give every visitor a full deck again (e.g. after wiping the votes table).
+// Round 2: votes remembered before Supabase was connected were never saved, so start fresh.
+const VOTE_ROUND = 2;
+const VOTED_KEY = `hotornot-voted-round${VOTE_ROUND}`;
 export function getVoted() {
 	try {
 		return JSON.parse(localStorage.getItem(VOTED_KEY)) || {};
@@ -34,8 +37,7 @@ function markVoted(file, hot) {
 }
 
 export async function castVote(file, hot) {
-	markVoted(file, hot);
-	if (!votingEnabled) return;
+	if (!votingEnabled) return; // nothing is saved, so don't hide the picture next time
 	const res = await fetch(`${SUPABASE_URL}/rest/v1/hotdog_votes`, {
 		method: 'POST',
 		headers: { ...headers, Prefer: 'return=minimal' },
@@ -43,6 +45,7 @@ export async function castVote(file, hot) {
 		keepalive: true,
 	});
 	if (!res.ok) throw new Error(`Vote failed (${res.status})`);
+	markVoted(file, hot); // only remember votes that actually saved
 }
 
 // Returns { [file]: { hot, notHot } }
