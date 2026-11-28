@@ -1,8 +1,9 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import NewsList from '../components/NewsList.astro';
 import { getHotdogNews } from '../data/hotdogNews.js';
 
-const articles = await getHotdogNews();
+const { uk, world } = await getHotdogNews();
 const updated = new Date();
 
 const fmt = (iso, opts) => new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/London', ...opts }).format(new Date(iso));
@@ -10,7 +11,7 @@ const fmt = (iso, opts) => new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/
 
 <BaseLayout
 	title="The Daily Wiener"
-	description="The Daily Wiener: the latest hot dog news from across the internet, updated every day."
+	description="The Daily Wiener: the latest hot dog news from the UK and around the world, updated every day."
 >
 	<header class="text-center mb-8 max-w-2xl mx-auto">
 		<p class="text-xs uppercase tracking-[0.3em] text-gray-500 mb-2">{fmt(updated.toISOString(), { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}</p>
@@ -21,39 +22,53 @@ const fmt = (iso, opts) => new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/
 	</header>
 
 	<main class="max-w-2xl mx-auto mb-8">
-		{articles.length === 0 ? (
+		{uk.length === 0 && world.length === 0 ? (
 			<p class="text-center text-gray-400 py-12">
 				The news van hasn't arrived yet. Check back tomorrow for fresh hot dog headlines.
 			</p>
 		) : (
-			<ol class="divide-y divide-gray-800">
-				{articles.map((a, i) => (
-					<li>
-						<a
-							href={a.link}
-							target="_blank"
-							rel="noopener noreferrer"
-							class="group flex gap-4 py-4 no-underline text-white"
-						>
-							<span class="text-red-400 font-black text-lg w-7 shrink-0 text-right tabular-nums">{i + 1}</span>
-							<span class="min-w-0">
-								<span class="block font-semibold leading-snug group-hover:text-red-400 group-hover:underline">
-									{a.title}
-									<span class="sr-only">(opens in a new tab)</span>
-								</span>
-								<span class="block text-sm text-gray-500 mt-1">
-									{a.source}
-									{a.source && a.date && ' · '}
-									{a.date && <time datetime={a.date}>{fmt(a.date, { day: 'numeric', month: 'short', year: 'numeric' })}</time>}
-								</span>
-							</span>
-						</a>
-					</li>
-				))}
-			</ol>
+			<>
+				<section aria-labelledby="uk-heading" class="mb-10">
+					<h2 id="uk-heading" class="flex items-baseline justify-between gap-3 text-2xl font-black border-b-2 border-red-500 pb-2">
+						<span class="flex items-center gap-2">
+							<!-- Union Jack as SVG: Windows doesn't render flag emoji. -->
+							<svg viewBox="0 0 60 30" width="34" height="17" class="shrink-0 rounded-sm" aria-hidden="true">
+								<clipPath id="uj-s"><path d="M0,0 v30 h60 v-30 z" /></clipPath>
+								<clipPath id="uj-t"><path d="M30,15 h30 v15 z v15 h-30 z h-30 v-15 z v-15 h30 z" /></clipPath>
+								<g clip-path="url(#uj-s)">
+									<path d="M0,0 v30 h60 v-30 z" fill="#012169" />
+									<path d="M0,0 L60,30 M60,0 L0,30" stroke="#fff" stroke-width="6" />
+									<path d="M0,0 L60,30 M60,0 L0,30" clip-path="url(#uj-t)" stroke="#C8102E" stroke-width="4" />
+									<path d="M30,0 v30 M0,15 h60" stroke="#fff" stroke-width="10" />
+									<path d="M30,0 v30 M0,15 h60" stroke="#C8102E" stroke-width="6" />
+								</g>
+							</svg>
+							UK Hot Dog News
+						</span>
+						<span class="hidden sm:inline text-xs font-normal text-gray-500 whitespace-nowrap">last 3 months</span>
+					</h2>
+					{uk.length > 0 ? (
+						<NewsList articles={uk} eagerCount={4} />
+					) : (
+						<p class="text-gray-400 py-6">
+							Britain's been quiet on the hot dog front lately. The world's been busier, see below.
+						</p>
+					)}
+				</section>
+
+				{world.length > 0 && (
+					<section aria-labelledby="world-heading">
+						<h2 id="world-heading" class="flex items-baseline justify-between gap-3 text-2xl font-black border-b-2 border-gray-600 pb-2">
+							<span>🌍 From Around the World</span>
+							<span class="hidden sm:inline text-xs font-normal text-gray-500 whitespace-nowrap">latest</span>
+						</h2>
+						<NewsList articles={world} eagerCount={uk.length ? 0 : 4} />
+					</section>
+				)}
+			</>
 		)}
 		<p class="text-center text-xs text-gray-600 mt-6">
-			Headlines via Google News. Last updated {fmt(updated.toISOString(), { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}.
+			Headlines via Bing News and Google News. Images belong to their publishers. Last updated {fmt(updated.toISOString(), { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}.
 		</p>
 	</main>
 
