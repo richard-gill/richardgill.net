@@ -278,8 +278,14 @@ const locationsJson = JSON.stringify(locations);
 
 		const markers = [];
 
-		const starsHtml = (n) =>
-			n ? `<div class="stars" aria-label="${n} out of 5 stars">${'★'.repeat(n)}${'☆'.repeat(5 - n)}</div>` : '';
+		// Text from the data file is inserted as HTML below, so escape it first.
+		const esc = (s) =>
+			String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
+
+		const starsHtml = (rating) => {
+			const n = Math.max(0, Math.min(5, Math.round(Number(rating) || 0)));
+			return n ? `<div class="stars" aria-label="${n} out of 5 stars">${'★'.repeat(n)}${'☆'.repeat(5 - n)}</div>` : '';
+		};
 
 		locationsData.forEach((loc) => {
 			const marker = L.marker([loc.lat, loc.lng], {
@@ -287,12 +293,16 @@ const locationsJson = JSON.stringify(locations);
 				title: loc.title,
 			}).addTo(map);
 
+			const src = `/images/${encodeURIComponent(loc.file)}`;
+			const title = esc(loc.title);
+			const description = esc(loc.description);
+
 			const tooltipHtml =
 				`<div class="tooltip-content">` +
-				`<img src="/images/${loc.file}" alt="${loc.title}" loading="lazy" width="200" height="150">` +
-				`<h3>${loc.title}</h3>` +
+				`<img src="${src}" alt="${title}" loading="lazy" width="200" height="150">` +
+				`<h3>${title}</h3>` +
 				starsHtml(loc.rating) +
-				`<p>${loc.description}</p>` +
+				`<p>${description}</p>` +
 				`</div>`;
 
 			marker.bindTooltip(tooltipHtml, {
@@ -304,10 +314,10 @@ const locationsJson = JSON.stringify(locations);
 
 			const popupHtml =
 				`<div class="popup-content">` +
-				`<img src="/images/${loc.file}" alt="${loc.title}" loading="lazy" width="280" height="200">` +
-				`<h3>${loc.title}</h3>` +
+				`<img src="${src}" alt="${title}" loading="lazy" width="280" height="200">` +
+				`<h3>${title}</h3>` +
 				starsHtml(loc.rating) +
-				`<p>${loc.description}</p>` +
+				`<p>${description}</p>` +
 				`</div>`;
 
 			marker.bindPopup(popupHtml, { maxWidth: 320, minWidth: 200 });

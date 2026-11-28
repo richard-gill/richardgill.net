@@ -1,5 +1,5 @@
-<!DOCTYPE html><html lang="en"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="Join Richard Gill on a Hot Dog World Tour! A photo gallery of hot dogs enjoyed in cities around the world, from Las Vegas to Berlin, Barcelona to Iceland."><title>Richard Gill&#39;s Hot Dog World Tour</title><meta http-equiv="content-language" content="en-GB"><link rel="shortcut icon" href="/favicon.ico"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><!-- Preload LCP images --><link rel="preload" href="/images/thumbs/amsterdam.webp" as="image" type="image/webp" fetchpriority="high"><link rel="preload" href="/images/thumbs/krakow.webp" as="image" type="image/webp" fetchpriority="high"><link rel="preload" href="/images/thumbs/Milan.webp" as="image" type="image/webp" fetchpriority="high"><link rel="stylesheet" href="/_astro/aboutme.DCeZFP2S.css">
-<link rel="stylesheet" href="/_astro/aboutme.BAN4Uv0g.css">
+<!DOCTYPE html><html lang="en"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="Join Richard Gill on a Hot Dog World Tour! A photo gallery of hot dogs enjoyed in cities around the world, from Las Vegas to Berlin, Barcelona to Iceland."><title>Richard Gill&#39;s Hot Dog World Tour</title><meta http-equiv="content-language" content="en-GB"><link rel="shortcut icon" href="/favicon.ico"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><!-- Preload LCP images --><link rel="preload" href="/images/thumbs/amsterdam.webp" as="image" type="image/webp" fetchpriority="high"><link rel="preload" href="/images/thumbs/krakow.webp" as="image" type="image/webp" fetchpriority="high"><link rel="preload" href="/images/thumbs/Milan.webp" as="image" type="image/webp" fetchpriority="high"><link rel="stylesheet" href="/_astro/aboutme.gIiRZcXn.css">
+<link rel="stylesheet" href="/_astro/aboutme.CskB_E1z.css">
 <style>.loading{background:#2a2a2a;min-height:200px}.loading img{opacity:0}.loading.shimmer{min-height:200px}.loaded{background:none;min-height:0}.loaded img{opacity:1;transition:opacity .3s ease}.hover\:scale-103:hover{transform:scale(1.03)}.overlay{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,#000000d9);padding:2rem .75rem .75rem;opacity:0;transition:opacity .3s ease}.overlay h3{font-size:.95rem;font-weight:600;color:#fff;margin-bottom:.25rem}.overlay p{font-size:.8rem;color:#ccc;line-height:1.4}.break-inside-avoid:hover .overlay{opacity:1}
 </style></head> <body class="bg-[#1a1a1a] text-white p-8 md:p-8">   <header class="text-center mb-8"> <img src="/images/thumbs/sm/hotdoglogo.webp" alt="Hot Dog World Tour Logo" width="404" height="352" class="max-w-[200px] w-[200px] h-auto mx-auto mb-4" fetchpriority="high"> <p class="max-w-[600px] mx-auto text-lg leading-relaxed text-gray-300">
 I love Hot Dogs! I hope you enjoy looking at my Hot Dogs from around the world as much as I have enjoyed
@@ -32,7 +32,14 @@ I love Hot Dogs! I hope you enjoy looking at my Hot Dogs from around the world a
 		const lightboxPrev = document.getElementById('lightbox-prev');
 		const lightboxNext = document.getElementById('lightbox-next');
 
-		const stars = (n) => (n ? '★'.repeat(n) + '☆'.repeat(5 - n) : '');
+		// Text from the data file is inserted as HTML below, so escape it first.
+		const esc = (s) =>
+			String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
+		const starCount = (n) => Math.max(0, Math.min(5, Math.round(Number(n) || 0)));
+		const stars = (n) => {
+			const k = starCount(n);
+			return k ? '★'.repeat(k) + '☆'.repeat(5 - k) : '';
+		};
 
 		let currentIndex = 0;
 		const loaded = {};
@@ -65,9 +72,9 @@ I love Hot Dogs! I hope you enjoy looking at my Hot Dogs from around the world a
 			const overlay = document.createElement('div');
 			overlay.className = 'overlay';
 			overlay.innerHTML =
-				`<h3>${img.title}</h3>` +
-				(img.rating ? `<p class="text-yellow-400" aria-label="${img.rating} out of 5 stars">${stars(img.rating)}</p>` : '') +
-				`<p>${img.description}</p>`;
+				`<h3>${esc(img.title)}</h3>` +
+				(starCount(img.rating) ? `<p class="text-yellow-400" aria-label="${starCount(img.rating)} out of 5 stars">${stars(img.rating)}</p>` : '') +
+				`<p>${esc(img.description)}</p>`;
 
 			item.appendChild(image);
 			item.appendChild(overlay);
