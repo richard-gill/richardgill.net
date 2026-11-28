@@ -4,6 +4,9 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+  # Rebuild every morning so The Daily Wiener has fresh headlines.
+  schedule:
+    - cron: '0 6 * * *'
 
 permissions:
   contents: read

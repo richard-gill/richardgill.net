@@ -10,6 +10,10 @@ create table if not exists public.hotdog_votes (
 -- Row Level Security: the public (anon) key may only INSERT votes, never read or change raw rows.
 alter table public.hotdog_votes enable row level security;
 
+-- Newer Supabase projects don't grant table access to anon by default.
+-- INSERT only (no SELECT/UPDATE/DELETE); the policy below still applies on top.
+grant insert on public.hotdog_votes to anon;
+
 drop policy if exists "anyone can vote" on public.hotdog_votes;
 create policy "anyone can vote"
 	on public.hotdog_votes for insert

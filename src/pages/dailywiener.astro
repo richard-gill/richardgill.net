@@ -1,0 +1,63 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getHotdogNews } from '../data/hotdogNews.js';
+
+const articles = await getHotdogNews();
+const updated = new Date();
+
+const fmt = (iso, opts) => new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/London', ...opts }).format(new Date(iso));
+---
+
+<BaseLayout
+	title="The Daily Wiener"
+	description="The Daily Wiener: the latest hot dog news from across the internet, updated every day."
+>
+	<header class="text-center mb-8 max-w-2xl mx-auto">
+		<p class="text-xs uppercase tracking-[0.3em] text-gray-500 mb-2">{fmt(updated.toISOString(), { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}</p>
+		<h1 class="text-4xl md:text-5xl font-black tracking-tight border-y-4 border-double border-gray-600 py-3 mb-3">
+			🌭 The Daily Wiener
+		</h1>
+		<p class="text-gray-400">All the hot dog news that's fit to relish. Fresh every morning.</p>
+	</header>
+
+	<main class="max-w-2xl mx-auto mb-8">
+		{articles.length === 0 ? (
+			<p class="text-center text-gray-400 py-12">
+				The news van hasn't arrived yet. Check back tomorrow for fresh hot dog headlines.
+			</p>
+		) : (
+			<ol class="divide-y divide-gray-800">
+				{articles.map((a, i) => (
+					<li>
+						<a
+							href={a.link}
+							target="_blank"
+							rel="noopener noreferrer"
+							class="group flex gap-4 py-4 no-underline text-white"
+						>
+							<span class="text-red-400 font-black text-lg w-7 shrink-0 text-right tabular-nums">{i + 1}</span>
+							<span class="min-w-0">
+								<span class="block font-semibold leading-snug group-hover:text-red-400 group-hover:underline">
+									{a.title}
+									<span class="sr-only">(opens in a new tab)</span>
+								</span>
+								<span class="block text-sm text-gray-500 mt-1">
+									{a.source}
+									{a.source && a.date && ' · '}
+									{a.date && <time datetime={a.date}>{fmt(a.date, { day: 'numeric', month: 'short', year: 'numeric' })}</time>}
+								</span>
+							</span>
+						</a>
+					</li>
+				))}
+			</ol>
+		)}
+		<p class="text-center text-xs text-gray-600 mt-6">
+			Headlines via Google News. Last updated {fmt(updated.toISOString(), { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}.
+		</p>
+	</main>
+
+	<div class="text-center">
+		<a href="/" class="text-red-400 text-sm no-underline hover:underline">← Gallery</a>
+	</div>
+</BaseLayout>

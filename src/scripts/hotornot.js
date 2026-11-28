@@ -1,17 +1,19 @@
 // Hot or Not Dog: shared vote storage (Supabase REST API, no SDK needed).
 //
-// Fill these in from Supabase → Project Settings → API.
-// The "anon public" key is designed to be public: the database rules in
+// From Supabase → Project Settings → API.
+// The publishable (anon) key is designed to be public: the database rules in
 // supabase/hotornot.sql only let it add votes and read the totals.
-const SUPABASE_URL = ''; // e.g. 'https://abcdefgh.supabase.co'
-const SUPABASE_ANON_KEY = '';
+const SUPABASE_URL = 'https://nyhqutvpgrtssvnuvhgf.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_X2rODkYRNVHCJ97op4oVUw_5_waU_ZY';
 
 export const votingEnabled = Boolean(SUPABASE_URL && SUPABASE_ANON_KEY);
 
 const headers = {
 	apikey: SUPABASE_ANON_KEY,
-	Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
 	'Content-Type': 'application/json',
+	// Legacy "eyJ…" anon keys are JWTs and also go in Authorization;
+	// newer "sb_publishable_…" keys must only be sent as `apikey`.
+	...(SUPABASE_ANON_KEY.startsWith('eyJ') && { Authorization: `Bearer ${SUPABASE_ANON_KEY}` }),
 };
 
 // Remember which pictures this browser has voted on, so people get one vote each per picture.
