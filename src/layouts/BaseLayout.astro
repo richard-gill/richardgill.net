@@ -55,18 +55,18 @@ const hotdogTiers = [
 
 		<footer class="text-center mt-8 pt-4 border-t border-gray-700">
 			<p class="text-lg font-semibold mb-3">🌭 Buy me a hot dog</p>
-			<div class="flex flex-wrap justify-center gap-3 mb-4">
+			<div class="grid grid-cols-3 gap-2 sm:gap-3 max-w-[26rem] mx-auto mb-4">
 				{hotdogTiers.map((tier) => (
 					<a
 						href={`${paypalMeBase}/${tier.amount}GBP`}
 						target="_blank"
 						rel="noopener noreferrer"
-						class={`flex flex-col items-center w-32 px-3 py-3 rounded-xl border-2 text-white no-underline transition-colors ${tier.classes}`}
+						class={`flex flex-col items-center min-w-0 px-1.5 py-2 sm:px-3 sm:py-3 rounded-xl border-2 text-white text-center no-underline transition-colors ${tier.classes}`}
 					>
-						<span class="text-2xl" aria-hidden="true">{tier.medal}</span>
-						<span class="font-bold">{tier.name}</span>
-						<span class="text-xl font-semibold">{tier.price}</span>
-						<span class="text-xs text-gray-400">{tier.topping}</span>
+						<span class="text-xl sm:text-2xl" aria-hidden="true">{tier.medal}</span>
+						<span class="text-sm sm:text-base font-bold">{tier.name}</span>
+						<span class="text-lg sm:text-xl font-semibold">{tier.price}</span>
+						<span class="text-[0.7rem] sm:text-xs leading-tight text-gray-400">{tier.topping}</span>
 					</a>
 				))}
 			</div>
