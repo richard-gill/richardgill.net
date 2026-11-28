@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import { hotdogsBought } from '../data/hotdogsBought.js';
 
 interface Props {
 	title: string;
@@ -14,10 +15,12 @@ const year = new Date().getFullYear();
 // PayPal.Me "Buy me a hot dog" tiers. The amount (with GBP currency) is appended to pre-fill the payment.
 const paypalMeBase = 'https://www.paypal.com/paypalme/GillyTheGreat';
 const hotdogTiers = [
-	{ name: 'Bronze', price: '£5', amount: '5', topping: 'with ketchup', medal: '🥉', classes: 'border-amber-700 hover:bg-amber-700/20' },
-	{ name: 'Silver', price: '£7.50', amount: '7.50', topping: 'with onions', medal: '🥈', classes: 'border-gray-300 hover:bg-gray-300/15' },
-	{ name: 'Gold', price: '£9', amount: '9', topping: 'with all the toppings', medal: '🥇', classes: 'border-yellow-400 hover:bg-yellow-400/15' },
+	{ key: 'bronze', name: 'Bronze', price: '£5', amount: '5', topping: 'with ketchup', medal: '🥉', classes: 'border-amber-700 hover:bg-amber-700/20' },
+	{ key: 'silver', name: 'Silver', price: '£7.50', amount: '7.50', topping: 'with onions', medal: '🥈', classes: 'border-gray-300 hover:bg-gray-300/15' },
+	{ key: 'gold', name: 'Gold', price: '£9', amount: '9', topping: 'with all the toppings', medal: '🥇', classes: 'border-yellow-400 hover:bg-yellow-400/15' },
 ];
+const boughtCount = (key: string) => Math.max(0, Math.floor(Number(hotdogsBought[key]) || 0));
+const totalBought = hotdogTiers.reduce((sum, t) => sum + boughtCount(t.key), 0);
 ---
 
 <!DOCTYPE html>
@@ -54,7 +57,20 @@ const hotdogTiers = [
 		<slot />
 
 		<footer class="text-center mt-8 pt-4 border-t border-gray-700">
-			<p class="text-lg font-semibold mb-3">🌭 Buy me a hot dog</p>
+			<p class="text-lg font-semibold mb-1">🌭 Buy me a hot dog</p>
+			<p class="text-sm text-gray-300 max-w-[26rem] mx-auto mb-1">
+				Buy me a hot dog and I'll credit you in the photo's description when I eat it! Add your name in the PayPal note.
+			</p>
+			<p class="text-sm text-gray-400 mb-3">
+				{totalBought > 0 ? (
+					<>
+						<strong class="text-red-400 text-base">{totalBought}</strong>
+						{totalBought === 1 ? ' hot dog bought by a fan so far. Thank you!' : ' hot dogs bought by fans so far. Thank you!'}
+					</>
+				) : (
+					'Be the first to buy me a hot dog!'
+				)}
+			</p>
 			<div class="grid grid-cols-3 gap-2 sm:gap-3 max-w-[26rem] mx-auto mb-4">
 				{hotdogTiers.map((tier) => (
 					<a
@@ -67,6 +83,11 @@ const hotdogTiers = [
 						<span class="text-sm sm:text-base font-bold">{tier.name}</span>
 						<span class="text-lg sm:text-xl font-semibold">{tier.price}</span>
 						<span class="text-[0.7rem] sm:text-xs leading-tight text-gray-400">{tier.topping}</span>
+						{boughtCount(tier.key) > 0 && (
+							<span class="mt-1 text-[0.7rem] sm:text-xs font-semibold text-gray-300">
+								🌭 × {boughtCount(tier.key)}
+							</span>
+						)}
 					</a>
 				))}
 			</div>

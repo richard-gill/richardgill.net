@@ -98,6 +98,30 @@ import '../styles/global.css';
 
 			<button id="publishBtn" class="btn w-full">Publish</button>
 			<pre id="status" class="text-sm text-gray-300 whitespace-pre-wrap"></pre>
+
+			<!-- Hot dogs bought counter -->
+			<div class="border-t border-gray-700 pt-5 space-y-3">
+				<h2 class="text-xl font-bold">🌭 Someone bought me a hot dog!</h2>
+				<p class="text-sm text-gray-400">
+					When PayPal tells you someone paid, tap their tier. The footer count updates once the site redeploys (a minute or two).
+				</p>
+				<div class="grid grid-cols-3 gap-2" id="boughtBtns">
+					{[
+						{ key: 'bronze', label: '🥉 Bronze', price: '£5' },
+						{ key: 'silver', label: '🥈 Silver', price: '£7.50' },
+						{ key: 'gold', label: '🥇 Gold', price: '£9' },
+					].map((t) => (
+						<div class="bg-[#2a2a2a] rounded-lg p-2 text-center space-y-2">
+							<div class="font-bold text-sm">{t.label}</div>
+							<div class="text-xs text-gray-400">{t.price}</div>
+							<div class="text-2xl font-bold" data-count={t.key}>–</div>
+							<button type="button" class="btn w-full !py-2" data-tier={t.key} data-delta="1">+1</button>
+							<button type="button" class="text-xs text-gray-400 underline" data-tier={t.key} data-delta="-1">−1 (undo)</button>
+						</div>
+					))}
+				</div>
+				<p id="boughtStatus" class="text-sm text-gray-300"></p>
+			</div>
 		</section>
 
 		<script>
@@ -152,6 +176,7 @@ import '../styles/global.css';
 					$('login').classList.add('hidden');
 					$('app').classList.remove('hidden');
 					map.invalidateSize();
+					refreshCounts();
 				} catch (e) {
 					setToken(null);
 					$('loginMsg').textContent = e.message;
@@ -300,6 +325,74 @@ import '../styles/global.css';
 			}
 
 			const status = (msg) => ($('status').textContent = msg);
+
+			// ---------- hot dogs bought counter ----------
+			const BOUGHT_PATH = 'src/data/hotdogsBought.js';
+			const TIERS = ['bronze', 'silver', 'gold'];
+			const readCounts = (source) =>
+				Object.fromEntries(TIERS.map((k) => [k, Number((source.match(new RegExp(`\\b${k}:\\s*(\\d+)`)) || [])[1] || 0)]));
+			const writeCounts = (source, counts) =>
+				TIERS.reduce((s, k) => s.replace(new RegExp(`(\\b${k}:\\s*)\\d+`), (_, prefix) => prefix + counts[k]), source);
+			const showCounts = (counts) =>
+				TIERS.forEach((k) => (document.querySelector(`[data-count="${k}"]`).textContent = counts[k]));
+
+			async function loadBoughtFile() {
+				const file = await gh(`/repos/${OWNER}/${REPO}/contents/${BOUGHT_PATH}?ref=${BRANCH}`);
+				const source = b64ToUtf8(file.content);
+				return { sha: file.sha, source, counts: readCounts(source) };
+			}
+
+			async function refreshCounts() {
+				try {
+					showCounts((await loadBoughtFile()).counts);
+				} catch (e) {
+					$('boughtStatus').textContent = `Couldn't load counts: ${e.message}`;
+				}
+			}
+
+			async function changeCount(tier, delta) {
+				const btns = [...document.querySelectorAll('#boughtBtns button')];
+				btns.forEach((b) => (b.disabled = true));
+				$('boughtStatus').textContent = 'Saving…';
+				try {
+					// Retry once if the file changed underneath us (e.g. two taps in quick succession).
+					for (let attempt = 0; ; attempt++) {
+						const { sha, source, counts } = await loadBoughtFile();
+						const next = { ...counts, [tier]: Math.max(0, counts[tier] + delta) };
+						if (next[tier] === counts[tier]) {
+							$('boughtStatus').textContent = 'Already at 0.';
+							return;
+						}
+						try {
+							await gh(`/repos/${OWNER}/${REPO}/contents/${BOUGHT_PATH}`, {
+								method: 'PUT',
+								body: JSON.stringify({
+									message: `${delta > 0 ? '+1' : '-1'} ${tier} hot dog bought`,
+									content: utf8ToB64(writeCounts(source, next)),
+									sha,
+									branch: BRANCH,
+								}),
+							});
+							showCounts(next);
+							const total = TIERS.reduce((n, k) => n + next[k], 0);
+							$('boughtStatus').textContent =
+								`✅ Saved. ${total} hot dog${total === 1 ? '' : 's'} bought in total. The site will update in a minute or two.`;
+							return;
+						} catch (e) {
+							if (attempt === 0 && /GitHub (409|422)/.test(e.message)) continue;
+							throw e;
+						}
+					}
+				} catch (e) {
+					$('boughtStatus').textContent = `❌ ${e.message}`;
+				} finally {
+					btns.forEach((b) => (b.disabled = false));
+				}
+			}
+
+			document.querySelectorAll('#boughtBtns button').forEach((b) =>
+				b.addEventListener('click', () => changeCount(b.dataset.tier, Number(b.dataset.delta))),
+			);
 
 			// ---------- star rating ----------
 			let rating = 0;
